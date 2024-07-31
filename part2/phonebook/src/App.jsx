@@ -24,6 +24,7 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    if (!newName) return
 
     const person = persons.find((person) => person.name === newName)
     if (person) {
