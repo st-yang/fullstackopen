@@ -49,7 +49,8 @@ const App = () => {
       <Button onClick={handleAnecdoteClick} text='next anecdote' />
 
       <Header name='Anecdote with most votes' />
-      <Anecdote text={anecdotes[mostVotes]} votes={allVotes[mostVotes]} />
+      {allVotes[mostVotes] === 0 && <p>No votes yet</p>}
+      {allVotes[mostVotes] !== 0 && <Anecdote text={anecdotes[mostVotes]} votes={allVotes[mostVotes]} />}
     </div>
   )
 }
