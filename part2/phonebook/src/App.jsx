@@ -35,6 +35,15 @@ const App = () => {
     }
   }
 
+  const deletePerson = (id) => {
+    const person = persons.find((person) => person.id === id)
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService.remove(id).then(() => {
+        setPersons(persons.filter((person) => person.id !== id))
+      })
+    }
+  }
+
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
       setPersons(initialPersons)
@@ -54,7 +63,7 @@ const App = () => {
         handleNewNumberChange={handleNewNumberChange}
       />
       <h3>Numbers</h3>
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filter={filter} deletePerson={deletePerson} />
     </div>
   )
 }
