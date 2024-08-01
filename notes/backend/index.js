@@ -19,6 +19,9 @@ let notes = [
   }
 ]
 
+// show frontend's static main page
+app.use(express.static('dist'))
+
 // log every request to the console
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
