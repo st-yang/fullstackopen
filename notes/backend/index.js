@@ -28,6 +28,11 @@ const requestLogger = (request, response, next) => {
   next()
 }
 
+// allow CORS for all requests
+const cors = require('cors')
+
+app.use(cors())
+
 // json-parser is listed before requestLogger, otherwise the body is undefined
 app.use(express.json())
 app.use(requestLogger)
