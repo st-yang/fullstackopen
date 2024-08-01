@@ -3,3 +3,6 @@ GET http://localhost:3001/info/
 
 ### GET all persons
 GET http://localhost:3001/api/persons/
+
+### GET person with id 1
+GET http://localhost:3001/api/persons/1
