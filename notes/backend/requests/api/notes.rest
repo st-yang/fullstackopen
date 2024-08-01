@@ -1,0 +1,21 @@
+### GET all notes
+GET http://localhost:3001/api/notes/
+
+### GET note with id 1
+GET http://localhost:3001/api/notes/1
+
+### POST new note
+POST http://localhost:3001/api/notes/ HTTP/1.1
+content-type: application/json
+
+{
+    "content": "Postman is good in testing backend",
+    "important": true
+}
+
+### POST without content
+POST http://localhost:3001/api/notes/ HTTP/1.1
+content-type: application/json
+
+### DELETE note with id 4
+DELETE http://localhost:3001/api/notes/4
