@@ -50,6 +50,31 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 
+const generateId = () => {
+  const randomId = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+  return String(randomId)
+}
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+
+  if (!body.name) {
+    return response.status(400).json({
+      error: 'name missing'
+    })
+  }
+
+  const person = {
+    id: generateId(),
+    name: body.name,
+    number: body.number || '',
+  }
+
+  persons = persons.concat(person)
+
+  response.json(person)
+})
+
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id
   persons = persons.filter(person => person.id !== id)

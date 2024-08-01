@@ -7,5 +7,34 @@ GET http://localhost:3001/api/persons/
 ### GET person with id 1
 GET http://localhost:3001/api/persons/1
 
+### POST new person
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Test Person",
+    "number": "123-456789"
+}
+
+### POST without name
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+{
+    "number": "123-456789"
+}
+
+### POST without number
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Test without Number"
+}
+
+### POST without content
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
 ### DELETE person with id 3
 DELETE http://localhost:3001/api/persons/3
