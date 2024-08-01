@@ -4,6 +4,7 @@ import countryService from './services/countries'
 import Content from './components/Content'
 
 function App() {
+  const [allCountries, setAllCountries] = useState([])
   const [countries, setCountries] = useState([])
   const [filter, setFilter] = useState('')
 
@@ -11,16 +12,25 @@ function App() {
     setFilter(event.target.value)
   }
 
+  // fetch all countries at start
   useEffect(() => {
     countryService.getAll().then((allCountries) => {
-      setCountries(allCountries)
+      setAllCountries(allCountries)
     })
   }, [])
+
+  // filter countries when filter changes
+  useEffect(() => {
+    const filteredCountries = allCountries.filter((country) =>
+      country.name.common.toLowerCase().includes(filter.toLowerCase()),
+    )
+    setCountries(filteredCountries)
+  }, [allCountries, filter])
 
   return (
     <div>
       <Filter value={filter} handleFilterChange={handleFilterChange} />
-      <Content countries={countries} filter={filter} />
+      <Content countries={countries} setCountries={setCountries} />
     </div>
   )
 }
