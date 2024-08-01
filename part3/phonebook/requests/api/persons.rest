@@ -16,6 +16,15 @@ content-type: application/json
     "number": "123-456789"
 }
 
+### POST with duplicated name
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Ada Lovelace",
+    "number": "123-456789"
+}
+
 ### POST without name
 POST http://localhost:3001/api/persons/ HTTP/1.1
 content-type: application/json
