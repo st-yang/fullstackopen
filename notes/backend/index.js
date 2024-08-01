@@ -1,8 +1,6 @@
 const express = require('express')
 const app = express()
 
-app.use(express.json())
-
 let notes = [
   {
     id: "1",
@@ -20,6 +18,19 @@ let notes = [
     important: true
   }
 ]
+
+// log every request to the console
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
+
+// json-parser is listed before requestLogger, otherwise the body is undefined
+app.use(express.json())
+app.use(requestLogger)
 
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
@@ -73,6 +84,13 @@ app.delete('/api/notes/:id', (request, response) => {
 
   response.status(204).end()
 })
+
+// catching requests made to non-existent routes
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
 const PORT = 3001
 app.listen(PORT, () => {
