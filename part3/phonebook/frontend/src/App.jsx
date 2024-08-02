@@ -33,26 +33,39 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    if (!newName) return
+    if (!newName || !newNumber) {
+      updateMessage(`name or number missing`, 'error')
+      return
+    }
 
     const person = persons.find((person) => person.name === newName)
     if (person) {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const updatedPerson = { ...person, number: newNumber }
-        personService.update(person.id, updatedPerson).then((returnedPerson) => {
-          setPersons(persons.map((p) => (p.id === person.id ? returnedPerson : p)))
-          setNewName('')
-          setNewNumber('')
-          updateMessage(`Updated ${newName}`)
-        })
+        personService
+          .update(person.id, updatedPerson)
+          .then((returnedPerson) => {
+            setPersons(persons.map((p) => (p.id === person.id ? returnedPerson : p)))
+            setNewName('')
+            setNewNumber('')
+            updateMessage(`Updated ${newName}`)
+          })
+          .catch((error) => {
+            updateMessage(`${error.message}: ${error.response.data.error}`, 'error')
+          })
       }
     } else {
-      personService.create({ name: newName, number: newNumber }).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
-        updateMessage(`Added ${newName}`)
-      })
+      personService
+        .create({ name: newName, number: newNumber })
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+          updateMessage(`Added ${newName}`)
+        })
+        .catch((error) => {
+          updateMessage(`${error.message}: ${error.response.data.error}`, 'error')
+        })
     }
   }
 
