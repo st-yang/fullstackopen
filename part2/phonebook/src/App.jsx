@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import './index.css'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
