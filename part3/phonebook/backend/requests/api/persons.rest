@@ -62,7 +62,8 @@ PUT http://localhost:3001/api/persons/66aca82b7843ef0433909c65 HTTP/1.1
 content-type: application/json
 
 {
-    "name": "aa"
+    "name": "aa",
+    "number": "1234-2"
 }
 
 ### PUT without content
