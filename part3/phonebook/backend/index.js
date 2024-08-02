@@ -2,6 +2,9 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 
+// show frontend's static main page
+app.use(express.static('dist'))
+
 // allow CORS for all requests
 const cors = require('cors')
 app.use(cors())
