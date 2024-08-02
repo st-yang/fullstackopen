@@ -13,8 +13,37 @@ content-type: application/json
     "important": true
 }
 
+### POST with invalid content
+POST http://localhost:3001/api/notes/ HTTP/1.1
+content-type: application/json
+
+{
+    "content": "test"
+}
+
 ### POST without content
 POST http://localhost:3001/api/notes/ HTTP/1.1
+content-type: application/json
+
+### PUT update note
+PUT http://localhost:3001/api/notes/66ac8ca28626ea57fa4fc8f5 HTTP/1.1
+content-type: application/json
+
+{
+    "content": "update test",
+    "important": true
+}
+
+### PUT with invalid content
+PUT http://localhost:3001/api/notes/66ac8ca28626ea57fa4fc8f5 HTTP/1.1
+content-type: application/json
+
+{
+    "content": "test"
+}
+
+### PUT without content
+PUT http://localhost:3001/api/notes/66ac8ca28626ea57fa4fc8f5 HTTP/1.1
 content-type: application/json
 
 ### DELETE note with id 4
