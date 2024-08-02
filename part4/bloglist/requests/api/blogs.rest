@@ -1,26 +1,26 @@
 ### GET all blogs
-GET http://localhost:3003/api/blogs/
+GET http://localhost:3001/api/blogs/
 
 ### GET blog with id 1
-GET http://localhost:3003/api/blogs/1
+GET http://localhost:3001/api/blogs/1
 
 ### POST new blog
-POST http://localhost:3003/api/blogs/ HTTP/1.1
+POST http://localhost:3001/api/blogs/ HTTP/1.1
 content-type: application/json
 
 {
     "title": "Blog Title",
     "author": "Author Name",
-    "url": "http://localhost:3003/api/blogs/",
+    "url": "http://localhost:3001/api/blogs/",
     "likes": 0
 }
 
 ### POST without content
-POST http://localhost:3003/api/blogs/ HTTP/1.1
+POST http://localhost:3001/api/blogs/ HTTP/1.1
 content-type: application/json
 
 ### PUT update blog
-PUT http://localhost:3003/api/blogs/66ac8ca28626ea57fa4fc8f5 HTTP/1.1
+PUT http://localhost:3001/api/blogs/66ac8ca28626ea57fa4fc8f5 HTTP/1.1
 content-type: application/json
 
 {
@@ -30,8 +30,8 @@ content-type: application/json
 }
 
 ### PUT without content
-PUT http://localhost:3003/api/blogs/66ac8ca28626ea57fa4fc8f5 HTTP/1.1
+PUT http://localhost:3001/api/blogs/66ac8ca28626ea57fa4fc8f5 HTTP/1.1
 content-type: application/json
 
 ### DELETE blog with id 4
-DELETE http://localhost:3003/api/blogs/4
+DELETE http://localhost:3001/api/blogs/4
