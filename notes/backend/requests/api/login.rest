@@ -1,0 +1,17 @@
+### login as root
+post http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "root",
+    "password": "salainen"
+}
+
+### login with invalid credentials
+post http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "invalid",
+    "password": "invalid"
+}
