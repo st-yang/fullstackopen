@@ -101,6 +101,32 @@ describe('when there is initially some blogs saved', () => {
     })
   })
 
+  describe('update an existing blog', () => {
+    test('succeeds with valid data', async () => {
+      const updateBlog = {
+        title: 'Canonical string reduction',
+        author: 'Edsger W. Dijkstra',
+        url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+        likes: 12,
+      }
+
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToUpdate = blogsAtStart[0]
+
+      await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(updateBlog)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const blogsAtEnd = await helper.blogsInDb()
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+
+      const titles = blogsAtEnd.map(b => b.title)
+      assert(titles.includes('Canonical string reduction'))
+    })
+  })
+
   describe('deletion of a blog', () => {
     test('succeeds with status code 204 if id is valid', async () => {
       const blogsAtStart = await helper.blogsInDb()
