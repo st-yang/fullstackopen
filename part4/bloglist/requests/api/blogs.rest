@@ -7,6 +7,7 @@ GET http://localhost:3001/api/blogs/1
 ### POST new blog
 POST http://localhost:3001/api/blogs/ HTTP/1.1
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2YjEwZGM5NmRjYWM0NzcyZmViZjgwNyIsImlhdCI6MTcyMjg4MzgxOCwiZXhwIjoxNzIyODg3NDE4fQ.a77n_4xvJGB1GX0xEL6fIt1tBqE4FU4dAbBNTJ0RpTM
 
 {
     "title": "Blog Title",
@@ -22,6 +23,7 @@ content-type: application/json
 ### PUT update blog
 PUT http://localhost:3001/api/blogs/66ac8ca28626ea57fa4fc8f5 HTTP/1.1
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2YjEwZGM5NmRjYWM0NzcyZmViZjgwNyIsImlhdCI6MTcyMjg4MzgxOCwiZXhwIjoxNzIyODg3NDE4fQ.a77n_4xvJGB1GX0xEL6fIt1tBqE4FU4dAbBNTJ0RpTM
 
 {
     "title": "Update Blog Title",
