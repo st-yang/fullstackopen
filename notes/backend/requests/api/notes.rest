@@ -10,7 +10,8 @@ content-type: application/json
 
 {
     "content": "Postman is good in testing backend",
-    "important": true
+    "important": true,
+    "userId": "66b0c7214c3dc62b8cb14e1c"
 }
 
 ### POST with invalid content
@@ -31,7 +32,8 @@ content-type: application/json
 
 {
     "content": "update test",
-    "important": true
+    "important": true,
+    "userId": "66b0c7214c3dc62b8cb14e1c"
 }
 
 ### PUT with invalid content

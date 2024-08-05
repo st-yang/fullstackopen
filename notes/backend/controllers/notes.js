@@ -21,6 +21,10 @@ notesRouter.post('/', async (request, response) => {
   const body = request.body
 
   const user = await User.findById(body.userId)
+  if (!user) {
+    response.status(400).end()
+    return
+  }
 
   const note = new Note({
     content: body.content,
@@ -41,11 +45,17 @@ notesRouter.delete('/:id', async (request, response) => {
 })
 
 notesRouter.put('/:id', async (request, response) => {
-  const { content, important } = request.body
+  const { content, important, userId } = request.body
+
+  const user = await User.findById(userId)
+  if (!user) {
+    response.status(400).end()
+    return
+  }
 
   const updatedNote = await Note.findByIdAndUpdate(
     request.params.id,
-    { content, important },
+    { content, important, user: user.id },
     { new: true, runValidators: true, context: 'query' },
   )
   response.json(updatedNote)
