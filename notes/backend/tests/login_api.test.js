@@ -26,7 +26,7 @@ describe('when there is initially one user in db', () => {
       password: 'sekret',
     }
 
-    await api
+    const loginResult = await api
       .post('/api/login')
       .send(user)
       .expect(200)
@@ -34,7 +34,7 @@ describe('when there is initially one user in db', () => {
 
     const usersAtEnd = await helper.usersInDb()
     const usernames = usersAtEnd.map(u => u.username)
-    assert(usernames.includes(user.username))
+    assert(usernames.includes(loginResult.body.username))
   })
 
   test('login with invalid credentials', async () => {
