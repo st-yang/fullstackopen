@@ -45,6 +45,27 @@ describe('blog list api tests', () => {
     const _ids = response.body.map(r => r._id)
     assert(_ids.every(id => id === undefined))
   })
+
+  test('a valid blog can be added ', async () => {
+    const newBlog = {
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 12,
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+
+    const titles = blogsAtEnd.map(b => b.title)
+    assert(titles.includes('Canonical string reduction'))
+  })
 })
 
 after(async () => {
