@@ -46,7 +46,7 @@ describe('blog list api tests', () => {
     assert(_ids.every(id => id === undefined))
   })
 
-  test('a valid blog can be added ', async () => {
+  test('a valid blog can be added', async () => {
     const newBlog = {
       title: 'Canonical string reduction',
       author: 'Edsger W. Dijkstra',
@@ -65,6 +65,24 @@ describe('blog list api tests', () => {
 
     const titles = blogsAtEnd.map(b => b.title)
     assert(titles.includes('Canonical string reduction'))
+  })
+
+  test('if the likes property is missing from the request', async () => {
+    const newBlog = {
+      title: 'First class tests',
+      author: 'Robert C. Martin',
+      url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    const addedBlog = blogsAtEnd.find(b => b.title === 'First class tests')
+    assert(addedBlog.likes === 0)
   })
 })
 
