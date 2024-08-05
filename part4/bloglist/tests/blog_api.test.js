@@ -84,6 +84,22 @@ describe('blog list api tests', () => {
     const addedBlog = blogsAtEnd.find(b => b.title === 'First class tests')
     assert(addedBlog.likes === 0)
   })
+
+  test('blog without title or url is not added', async () => {
+    const newBlog = {
+      author: 'Edsger W. Dijkstra',
+      likes: 12
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+  })
 })
 
 after(async () => {
