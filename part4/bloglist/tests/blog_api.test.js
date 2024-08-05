@@ -35,6 +35,16 @@ describe('blog list api tests', () => {
     const titles = response.body.map(r => r.title)
     assert(titles.includes('Go To Statement Considered Harmful'))
   })
+
+  test('the unique identifier property of the blog posts is named id', async () => {
+    const response = await api.get('/api/blogs')
+
+    const ids = response.body.map(r => r.id)
+    assert(ids.every(id => id !== undefined))
+
+    const _ids = response.body.map(r => r._id)
+    assert(_ids.every(id => id === undefined))
+  })
 })
 
 after(async () => {
