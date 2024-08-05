@@ -39,7 +39,7 @@ describe('when there is initially one user in db', () => {
       username: user.username,
       id: user.id,
     }
-    const token = jwt.sign(userForToken, process.env.SECRET)
+    const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: 60 * 60 })
 
     assert.strictEqual(loginResult.body.token, token)
   })

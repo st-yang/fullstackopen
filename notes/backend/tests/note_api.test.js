@@ -75,7 +75,7 @@ describe('when there is initially some notes saved', () => {
         username: user.username,
         id: user.id,
       }
-      const token = jwt.sign(userForToken, process.env.SECRET)
+      const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: 60 * 60 })
 
       const newNote = {
         content: 'async/await simplifies making async calls',
@@ -103,7 +103,7 @@ describe('when there is initially some notes saved', () => {
         username: user.username,
         id: user.id,
       }
-      const token = jwt.sign(userForToken, process.env.SECRET)
+      const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: 60 * 60 })
 
       const newNote = {
         important: true
