@@ -1,0 +1,28 @@
+### GET all users
+GET http://localhost:3001/api/users/
+
+### GET user with id 1
+GET http://localhost:3001/api/users/1
+
+### POST new user
+POST http://localhost:3001/api/users/ HTTP/1.1
+content-type: application/json
+
+{
+    "username": "root",
+    "name": "Superuser",
+    "password": "salainen"
+}
+
+### POST with invalid content
+POST http://localhost:3001/api/users/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Superuser",
+    "password": "salainen"
+}
+
+### POST without content
+POST http://localhost:3001/api/users/ HTTP/1.1
+content-type: application/json
