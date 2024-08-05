@@ -1,6 +1,7 @@
 const { test, after, beforeEach, describe } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
@@ -69,16 +70,21 @@ describe('when there is initially some notes saved', () => {
   describe('addition of a new note', () => {
     test('succeeds with valid data', async () => {
       const usersAtStart = await helper.usersInDb()
-      const userToPost = usersAtStart[0]
+      const user = usersAtStart[0]
+      const userForToken = {
+        username: user.username,
+        id: user.id,
+      }
+      const token = jwt.sign(userForToken, process.env.SECRET)
 
       const newNote = {
         content: 'async/await simplifies making async calls',
         important: true,
-        userId: userToPost.id,
       }
 
       await api
         .post('/api/notes')
+        .auth(token, { type: 'bearer' })
         .send(newNote)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -91,12 +97,21 @@ describe('when there is initially some notes saved', () => {
     })
 
     test('fails with status code 400 if data invalid', async () => {
+      const usersAtStart = await helper.usersInDb()
+      const user = usersAtStart[0]
+      const userForToken = {
+        username: user.username,
+        id: user.id,
+      }
+      const token = jwt.sign(userForToken, process.env.SECRET)
+
       const newNote = {
         important: true
       }
 
       await api
         .post('/api/notes')
+        .auth(token, { type: 'bearer' })
         .send(newNote)
         .expect(400)
 
