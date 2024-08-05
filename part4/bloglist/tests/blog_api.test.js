@@ -165,6 +165,24 @@ describe('when there is initially some blogs saved', () => {
 
       assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
     })
+
+    test('fails with status code 401 if token not provided, invalid, or expired', async () => {
+      const newBlog = {
+        title: 'No Token Provided',
+        author: 'Robert C. Martin',
+        url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+        likes: 12
+      }
+
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(401)
+
+      const blogsAtEnd = await helper.blogsInDb()
+
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+    })
   })
 
   describe('update an existing blog', () => {
