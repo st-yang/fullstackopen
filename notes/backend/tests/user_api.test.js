@@ -1,6 +1,7 @@
 const { test, after, beforeEach, describe } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 const supertest = require('supertest')
 const bcrypt = require('bcrypt')
 const app = require('../app')
@@ -61,6 +62,44 @@ describe('when there is initially one user in db', () => {
     assert(result.body.error.includes('expected `username` to be unique'))
 
     assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+  })
+
+  describe('test login api', () => {
+    test('login as root', async () => {
+      const loginUser = {
+        username: 'root',
+        password: 'sekret',
+      }
+
+      const loginResult = await api
+        .post('/api/login')
+        .send(loginUser)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      const usersAtEnd = await helper.usersInDb()
+      const user = usersAtEnd.find(u => u.username === loginResult.body.username)
+      const userForToken = {
+        username: user.username,
+        id: user.id,
+      }
+      const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: 60 * 60 })
+
+      assert.strictEqual(loginResult.body.token, token)
+    })
+
+    test('login with invalid credentials', async () => {
+      const user = {
+        username: 'invalid',
+        password: 'invalid',
+      }
+
+      await api
+        .post('/api/login')
+        .send(user)
+        .expect(401)
+        .expect('Content-Type', /application\/json/)
+    })
   })
 })
 
