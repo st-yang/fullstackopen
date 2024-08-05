@@ -2,16 +2,23 @@ const { test, describe, after, beforeEach } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 
 const helper = require('./test_helper')
 
+const User = require('../models/user')
 const Blog = require('../models/blog')
 
 describe('when there is initially some blogs saved', () => {
   beforeEach(async () => {
+    await User.deleteMany({})
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+    await user.save()
+
     await Blog.deleteMany({})
     await Blog.insertMany(helper.initialBlogs)
   })
@@ -197,19 +204,60 @@ describe('when there is initially some blogs saved', () => {
 
   describe('deletion of a blog', () => {
     test('succeeds with status code 204 if id is valid', async () => {
-      const blogsAtStart = await helper.blogsInDb()
-      const blogToDelete = blogsAtStart[0]
+      const usersAtStart = await helper.usersInDb()
+      const user = usersAtStart[0]
+      const userForToken = {
+        username: user.username,
+        id: user.id,
+      }
+      const token = jwt.sign(userForToken, process.env.SECRET)
+
+      const newBlog = {
+        title: 'New Blog To Be Deleted',
+        author: 'Tester',
+        url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+        likes: 12,
+      }
+      const response = await api
+        .post('/api/blogs')
+        .auth(token, { type: 'bearer' })
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
 
       await api
-        .delete(`/api/blogs/${blogToDelete.id}`)
+        .delete(`/api/blogs/${response.body.id}`)
+        .auth(token, { type: 'bearer' })
         .expect(204)
 
       const blogsAtEnd = await helper.blogsInDb()
 
       const titles = blogsAtEnd.map(r => r.title)
-      assert(!titles.includes(blogToDelete.title))
+      assert(!titles.includes(newBlog.title))
 
-      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+    })
+
+    test('fails with status code 401 if user id is not matched', async () => {
+      const usersAtStart = await helper.usersInDb()
+      const user = usersAtStart[0]
+      const userForToken = {
+        username: user.username,
+        id: user.id,
+      }
+      const token = jwt.sign(userForToken, process.env.SECRET)
+
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToDelete = blogsAtStart[0]
+
+      await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .auth(token, { type: 'bearer' })
+        .expect(401)
+
+      const blogsAtEnd = await helper.blogsInDb()
+      assert(blogsAtEnd.find(b => b.id === blogToDelete.id))
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
     })
   })
 })
