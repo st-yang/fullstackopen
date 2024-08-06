@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -17,6 +18,8 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -77,6 +80,8 @@ const App = () => {
   )
 
   const createBlog = (event) => {
+    blogFormRef.current.toggleVisibility()
+
     event.preventDefault()
 
     const blogObject = { title, author, url, likes: 0 }
@@ -90,21 +95,23 @@ const App = () => {
   }
 
   const blogForm = () => (
-    <form onSubmit={createBlog}>
-      <div>
-        title:
-        <input value={title} onChange={(event) => setTitle(event.target.value)} />
-      </div>
-      <div>
-        author:
-        <input value={author} onChange={(event) => setAuthor(event.target.value)} />
-      </div>
-      <div>
-        url:
-        <input value={url} onChange={(event) => setUrl(event.target.value)} />
-      </div>
-      <button type='submit'>create</button>
-    </form>
+    <Togglable buttonLabel='new blog' ref={blogFormRef}>
+      <form onSubmit={createBlog}>
+        <div>
+          title:
+          <input value={title} onChange={(event) => setTitle(event.target.value)} />
+        </div>
+        <div>
+          author:
+          <input value={author} onChange={(event) => setAuthor(event.target.value)} />
+        </div>
+        <div>
+          url:
+          <input value={url} onChange={(event) => setUrl(event.target.value)} />
+        </div>
+        <button type='submit'>create</button>
+      </form>
+    </Togglable>
   )
 
   return (
