@@ -51,6 +51,8 @@ describe('Blog app', () => {
         await createBlog(page, 'First Blog', 'First Author', 'http://www.firstblog.com')
         await createBlog(page, 'Second Blog', 'Second Author', 'http://www.secondblog.com')
         await createBlog(page, 'Third Blog', 'Third Author', 'http://www.thirdblog.com')
+
+        await page.goto('/')
       })
 
       test('blog can be liked', async ({ page }) => {
@@ -60,6 +62,23 @@ describe('Blog app', () => {
         const detailElement = page.getByText('http://www.secondblog.com').locator('..')
         await detailElement.getByRole('button', { name: 'like' }).click()
         await expect(detailElement.getByText('likes 1')).toBeVisible()
+      })
+
+      test('blog can be deleted', async ({ page }) => {
+        await expect(page.getByText('First Blog First Author')).toBeVisible()
+
+        const blogElement = page.getByText('First Blog').locator('..')
+        await blogElement.getByRole('button', { name: 'view' }).click()
+
+        page.on('dialog', async (dialog) => {
+          expect(dialog.message()).toEqual('Remove blog First Blog by First Author')
+          await dialog.accept()
+        });
+        const detailElement = page.getByText('http://www.firstblog.com').locator('..')
+        await detailElement.getByRole('button', { name: 'remove' }).click()
+
+        await page.getByText('blog First Blog by First Author removed').waitFor()
+        await expect(page.getByText('First Blog First Author')).not.toBeVisible()
       })
     })
   })
