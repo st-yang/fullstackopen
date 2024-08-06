@@ -6,11 +6,11 @@ test('<BlogForm /> updates parent state and calls onSubmit', async () => {
   const createBlog = vi.fn()
   const user = userEvent.setup()
 
-  const { container } = render(<BlogForm createBlog={createBlog} />)
+  render(<BlogForm createBlog={createBlog} />)
 
-  const title = container.querySelector('#title')
-  const author = container.querySelector('#author')
-  const url = container.querySelector('#url')
+  const title = screen.getByTestId('title')
+  const author = screen.getByTestId('author')
+  const url = screen.getByTestId('url')
   const sendButton = screen.getByText('create')
 
   await user.type(title, 'test title')
