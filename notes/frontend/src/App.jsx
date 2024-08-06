@@ -79,7 +79,7 @@ const App = () => {
   const notesToShow = showAll ? notes : notes.filter((note) => note.important)
 
   const loginForm = () => (
-    <Togglable buttonLabel='login'>
+    <Togglable buttonLabel='log in'>
       <LoginForm handleLogin={handleLogin} />
     </Togglable>
   )
@@ -100,7 +100,7 @@ const App = () => {
       ) : (
         <div>
           <p>
-            {user.name} logged-in <button onClick={handleLogout}>logout</button>
+            {user.name} logged in <button onClick={handleLogout}>logout</button>
           </p>
           {noteForm()}
         </div>
