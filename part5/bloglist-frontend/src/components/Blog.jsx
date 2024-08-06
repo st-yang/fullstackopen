@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
   const [expanded, setExpanded] = useState(false)
   const toggleExpanded = () => {
     setExpanded(!expanded)
@@ -11,6 +11,13 @@ const Blog = ({ blog, updateBlog }) => {
     const updatedBlog = { ...blog, likes: blog.likes + 1 }
     updateBlog(updatedBlog)
   }
+
+  const removeBlog = () => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      deleteBlog(blog)
+    }
+  }
+  const showRemove = blog.user.username === user.username
 
   const blogStyle = {
     paddingTop: 10,
@@ -32,6 +39,7 @@ const Blog = ({ blog, updateBlog }) => {
             likes {blog.likes} <button onClick={likeBlog}>like</button>
           </div>
           <div>{blog.user.name}</div>
+          {showRemove && <button onClick={removeBlog}>remove</button>}
         </div>
       )}
     </div>

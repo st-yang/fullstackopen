@@ -67,6 +67,13 @@ const App = () => {
     })
   }
 
+  const deleteBlog = (blogObject) => {
+    blogService.remove(blogObject.id).then(() => {
+      setBlogs(blogs.filter((b) => b.id !== blogObject.id))
+      updateMessage(`blog ${blogObject.title} by ${blogObject.author} removed`)
+    })
+  }
+
   const blogForm = () => (
     <Togglable buttonLabel='new blog' ref={blogFormRef}>
       <BlogForm createBlog={createBlog} />
@@ -88,7 +95,7 @@ const App = () => {
           {blogs
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
-              <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+              <Blog key={blog.id} user={user} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />
             ))}
         </div>
       )}
