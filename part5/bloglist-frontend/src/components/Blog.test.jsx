@@ -24,8 +24,6 @@ test('renders url and likes after clicking view button', async () => {
     likes: 10,
   }
 
-  const mockHandler = vi.fn()
-
   render(<Blog blog={blog} />)
 
   const user = userEvent.setup()
@@ -37,4 +35,27 @@ test('renders url and likes after clicking view button', async () => {
 
   const likes = screen.getByText('likes 10')
   expect(likes).toBeDefined()
+})
+
+test('clicking the like button twice calls event handler twice', async () => {
+  const blog = {
+    title: 'First class tests',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+    likes: 10,
+  }
+
+  const updateBlog = vi.fn()
+
+  render(<Blog blog={blog} updateBlog={updateBlog} />)
+
+  const user = userEvent.setup()
+  const viewButton = screen.getByText('view')
+  await user.click(viewButton)
+
+  const likeButton = screen.getByText('like')
+  await user.click(likeButton)
+  await user.click(likeButton)
+
+  expect(updateBlog.mock.calls).toHaveLength(2)
 })
