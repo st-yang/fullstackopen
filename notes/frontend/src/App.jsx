@@ -10,7 +10,6 @@ import loginService from './services/login'
 
 const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
 
@@ -34,16 +33,9 @@ const App = () => {
     }
   }, [])
 
-  const addNote = (event) => {
-    event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      important: Math.random() > 0.5,
-    }
-
+  const addNote = (noteObject) => {
     noteService.create(noteObject).then((returnedNote) => {
       setNotes(notes.concat(returnedNote))
-      setNewNote('')
     })
   }
 
@@ -63,10 +55,6 @@ const App = () => {
         }, 5000)
         setNotes(notes.filter((n) => n.id !== id))
       })
-  }
-
-  const handleNoteChange = (event) => {
-    setNewNote(event.target.value)
   }
 
   const handleLogin = async (event) => {
@@ -110,6 +98,12 @@ const App = () => {
     </Togglable>
   )
 
+  const noteForm = () => (
+    <Togglable buttonLabel='new note'>
+      <NoteForm createNote={addNote} />
+    </Togglable>
+  )
+
   return (
     <div>
       <h1>Notes</h1>
@@ -122,9 +116,7 @@ const App = () => {
           <p>
             {user.name} logged-in <button onClick={handleLogout}>logout</button>
           </p>
-          <Togglable buttonLabel='new note'>
-            <NoteForm onSubmit={addNote} value={newNote} handleChange={handleNoteChange} />
-          </Togglable>
+          {noteForm()}
         </div>
       )}
 
