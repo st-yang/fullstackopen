@@ -31,7 +31,10 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
   return (
     <div style={blogStyle} className='blog'>
       <div>
-        {blog.title} {blog.author} <button onClick={toggleExpanded}>{buttonLabel}</button>
+        <span>
+          {blog.title} {blog.author}
+        </span>
+        <button onClick={toggleExpanded}>{buttonLabel}</button>
       </div>
       {expanded && (
         <div>
