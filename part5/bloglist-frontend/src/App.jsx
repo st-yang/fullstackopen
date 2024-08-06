@@ -61,6 +61,12 @@ const App = () => {
     })
   }
 
+  const updateBlog = (blogObject) => {
+    blogService.update(blogObject.id, blogObject).then((returnedBlog) => {
+      setBlogs(blogs.map((b) => (b.id === blogObject.id ? blogObject : b)))
+    })
+  }
+
   const blogForm = () => (
     <Togglable buttonLabel='new blog' ref={blogFormRef}>
       <BlogForm createBlog={createBlog} />
@@ -80,7 +86,7 @@ const App = () => {
           </p>
           {blogForm()}
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
           ))}
         </div>
       )}
