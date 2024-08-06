@@ -80,6 +80,27 @@ describe('Blog app', () => {
         await page.getByText('blog First Blog by First Author removed').waitFor()
         await expect(page.getByText('First Blog First Author')).not.toBeVisible()
       })
+
+      test('only the author can see the remove button of blog', async ({ page, request }) => {
+        await request.post('/api/users', {
+          data: {
+            name: 'Observer',
+            username: 'observer',
+            password: 'salainen'
+          }
+        })
+
+        await page.getByRole('button', { name: 'logout' }).click()
+        await loginWith(page, 'observer', 'salainen')
+
+        await expect(page.getByText('First Blog First Author')).toBeVisible()
+
+        const blogElement = page.getByText('First Blog').locator('..')
+        await blogElement.getByRole('button', { name: 'view' }).click()
+
+        const detailElement = page.getByText('http://www.firstblog.com').locator('..')
+        expect(detailElement.getByRole('button', { name: 'remove' })).not.toBeVisible()
+      })
     })
   })
 })
