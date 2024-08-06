@@ -18,7 +18,7 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
       deleteBlog(blog)
     }
   }
-  const showRemove = blog.user.username === user.username
+  const showRemove = user && blog.user.username === user.username
 
   const blogStyle = {
     paddingTop: 10,
@@ -29,7 +29,7 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       <div>
         {blog.title} {blog.author} <button onClick={toggleExpanded}>{buttonLabel}</button>
       </div>
@@ -49,9 +49,9 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
-  updateBlog: PropTypes.func.isRequired,
-  deleteBlog: PropTypes.func.isRequired,
+  user: PropTypes.object,
+  updateBlog: PropTypes.func,
+  deleteBlog: PropTypes.func,
 }
 
 export default Blog
