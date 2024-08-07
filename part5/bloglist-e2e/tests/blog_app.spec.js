@@ -101,6 +101,32 @@ describe('Blog app', () => {
         const detailElement = page.getByText('http://www.firstblog.com').locator('..')
         expect(detailElement.getByRole('button', { name: 'remove' })).not.toBeVisible()
       })
+
+      test('blogs are sorted by likes descendingly', async ({ page }) => {
+        // assert blogs are in original order: 1->2->3
+        await expect(page.locator('.blog').first().getByText('First Blog First Author')).toBeVisible()
+        await expect(page.locator('.blog').last().getByText('Third Blog Third Author')).toBeVisible()
+
+        // add 2 likes to the second blog
+        const blogElement2 = page.getByText('Second Blog').locator('..')
+        await blogElement2.getByRole('button', { name: 'view' }).click()
+        const detailElement2 = page.getByText('http://www.secondblog.com').locator('..')
+        await detailElement2.getByRole('button', { name: 'like' }).click()
+        await detailElement2.getByText('likes 1').waitFor()
+        await detailElement2.getByRole('button', { name: 'like' }).click()
+        await detailElement2.getByText('likes 2').waitFor()
+
+        // add 1 like to the third blog
+        const blogElement3 = page.getByText('Third Blog').locator('..')
+        await blogElement3.getByRole('button', { name: 'view' }).click()
+        const detailElement3 = page.getByText('http://www.thirdblog.com').locator('..')
+        await detailElement3.getByRole('button', { name: 'like' }).click()
+        await detailElement3.getByText('likes 1').waitFor()
+
+        // assert blogs are sorted in descending order by likes: 2->3->1
+        await expect(page.locator('.blog').first().getByText('Second Blog Second Author')).toBeVisible()
+        await expect(page.locator('.blog').last().getByText('First Blog First Author')).toBeVisible()
+      })
     })
   })
 })
