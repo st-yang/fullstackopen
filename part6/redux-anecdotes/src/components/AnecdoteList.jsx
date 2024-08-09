@@ -20,7 +20,9 @@ const Anecdote = ({ anecdote }) => {
 }
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state)
+  const anecdotes = useSelector(({ anecdotes, filter }) =>
+    anecdotes.filter((anecdote) => anecdote.content.match(new RegExp(filter, 'i'))),
+  )
 
   return anecdotes
     .sort((a, b) => b.votes - a.votes)
