@@ -5,8 +5,8 @@ import { clearNotification, setNotification } from '../reducers/notificationRedu
 const Anecdote = ({ anecdote }) => {
   const dispatch = useDispatch()
 
-  const vote = (id) => {
-    dispatch(voteAnecdote(id))
+  const vote = () => {
+    dispatch(voteAnecdote(anecdote))
 
     dispatch(setNotification(`You voted '${anecdote.content}'`))
     setTimeout(() => {
@@ -19,7 +19,7 @@ const Anecdote = ({ anecdote }) => {
       <div>{anecdote.content}</div>
       <div>
         has {anecdote.votes}
-        <button onClick={() => vote(anecdote.id)}>vote</button>
+        <button onClick={vote}>vote</button>
       </div>
     </div>
   )
