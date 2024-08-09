@@ -12,19 +12,19 @@ const App = () => {
 
   const notes = []
 
-  return(
+  return (
     <div>
       <h2>Notes app</h2>
       <form onSubmit={addNote}>
-        <input name="note" />
-        <button type="submit">add</button>
+        <input name='note' />
+        <button type='submit'>add</button>
       </form>
-      {notes.map(note =>
+      {notes.map((note) => (
         <li key={note.id} onClick={() => toggleImportance(note)}>
-          {note.content} 
+          {note.content}
           <strong> {note.important ? 'important' : ''}</strong>
         </li>
-      )}
+      ))}
     </div>
   )
 }
