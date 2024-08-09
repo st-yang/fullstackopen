@@ -3,11 +3,10 @@ import { getAnecdotes, updateAnecdote } from './requests'
 
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
-import { useNotificationDispatch } from './context/NotificationContext'
+import { useNotification } from './context/NotificationContext'
 
 const App = () => {
-  const notificationDispatch = useNotificationDispatch()
-
+  const notification = useNotification()
   const queryClient = useQueryClient()
 
   const updateAnecdoteMutation = useMutation({
@@ -19,10 +18,7 @@ const App = () => {
         anecdotes.map((anecdote) => (anecdote.id !== newAnecdote.id ? anecdote : newAnecdote)),
       )
 
-      notificationDispatch({ type: 'SET', payload: `You voted '${newAnecdote.content}'` })
-      setTimeout(() => {
-        notificationDispatch({ type: 'CLEAR' })
-      }, 5000)
+      notification(`You voted '${newAnecdote.content}'`)
     },
   })
 
