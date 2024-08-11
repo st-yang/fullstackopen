@@ -1,6 +1,5 @@
 import { useState } from 'react'
-
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate, useMatch } from 'react-router-dom'
+import { Routes, Route, Link, Navigate, useNavigate, useMatch } from 'react-router-dom'
 
 const Home = () => (
   <div>
