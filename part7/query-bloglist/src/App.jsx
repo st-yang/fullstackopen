@@ -6,10 +6,12 @@ import loginService from './services/login'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
+import { useNotification } from './context/NotificationContext'
 
 const App = () => {
+  const notification = useNotification()
+
   const [blogs, setBlogs] = useState([])
-  const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null)
 
   const blogFormRef = useRef()
@@ -27,13 +29,6 @@ const App = () => {
     }
   }, [])
 
-  const updateMessage = (text, type = 'success') => {
-    setMessage({ text, type })
-    setTimeout(() => {
-      setMessage(null)
-    }, 5000)
-  }
-
   const handleLogin = async ({ username, password }) => {
     try {
       const user = await loginService.login({ username, password })
@@ -42,7 +37,7 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
     } catch (exception) {
-      updateMessage('wrong username or password', 'error')
+      notification('wrong username or password', 'error')
     }
   }
 
@@ -57,7 +52,7 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
     blogService.create(blogObject).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog))
-      updateMessage(`a new blog ${blogObject.title} by ${blogObject.author} added`)
+      notification(`a new blog ${blogObject.title} by ${blogObject.author} added`)
     })
   }
 
@@ -70,7 +65,7 @@ const App = () => {
   const deleteBlog = (blogObject) => {
     blogService.remove(blogObject.id).then(() => {
       setBlogs(blogs.filter((b) => b.id !== blogObject.id))
-      updateMessage(`blog ${blogObject.title} by ${blogObject.author} removed`)
+      notification(`blog ${blogObject.title} by ${blogObject.author} removed`)
     })
   }
 
@@ -83,7 +78,7 @@ const App = () => {
   return (
     <div>
       {user === null ? <h2>Log in to application</h2> : <h2>blogs</h2>}
-      <Notification message={message} />
+      <Notification />
       {user === null ? (
         loginForm()
       ) : (

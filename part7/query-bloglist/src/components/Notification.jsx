@@ -1,14 +1,8 @@
-import PropTypes from 'prop-types'
-const Notification = ({ message }) => {
-  if (message === null) {
-    return null
-  }
+import { useNotificationValue } from '../context/NotificationContext'
 
-  return <div className={message.type}>{message.text}</div>
-}
-
-Notification.propTypes = {
-  message: PropTypes.object,
+const Notification = () => {
+  const notification = useNotificationValue()
+  return notification ? <div className={notification.type}>{notification.content}</div> : null
 }
 
 export default Notification
