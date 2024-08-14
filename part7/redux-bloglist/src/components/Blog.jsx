@@ -1,21 +1,24 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import PropTypes from 'prop-types'
 
-const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
+const Blog = ({ user, blog }) => {
+  const dispatch = useDispatch()
+
   const [expanded, setExpanded] = useState(false)
   const toggleExpanded = () => {
     setExpanded(!expanded)
   }
   const buttonLabel = expanded ? 'hide' : 'view'
 
-  const likeBlog = () => {
-    const updatedBlog = { ...blog, likes: blog.likes + 1 }
-    updateBlog(updatedBlog)
+  const handleLikeBlog = () => {
+    dispatch(likeBlog(blog))
   }
 
-  const removeBlog = () => {
+  const handleRemoveBlog = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      deleteBlog(blog)
+      dispatch(removeBlog(blog))
     }
   }
   const showRemove = user && blog.user.username === user.username
@@ -40,10 +43,10 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
         <div>
           <div>{blog.url}</div>
           <div>
-            likes {blog.likes} <button onClick={likeBlog}>like</button>
+            likes {blog.likes} <button onClick={handleLikeBlog}>like</button>
           </div>
           {blog.user && <div>{blog.user.name}</div>}
-          {showRemove && <button onClick={removeBlog}>remove</button>}
+          {showRemove && <button onClick={handleRemoveBlog}>remove</button>}
         </div>
       )}
     </div>
@@ -53,8 +56,6 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   user: PropTypes.object,
-  updateBlog: PropTypes.func,
-  deleteBlog: PropTypes.func,
 }
 
 export default Blog
