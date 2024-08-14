@@ -1,20 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
-import userService from '../services/users'
+import { useQueryClient } from '@tanstack/react-query'
+import { Link } from 'react-router-dom'
+
 const UserList = () => {
-  const result = useQuery({
-    queryKey: ['users'],
-    queryFn: userService.getAll,
-    refetchOnWindowFocus: false,
-    retry: 1,
-  })
+  const queryClient = useQueryClient()
+  const users = queryClient.getQueryData(['users'])
 
-  if (result.isLoading) {
-    return <div>loading data...</div>
-  }
-
-  const users = result.data
-
-  return (
+  return users ? (
     <div>
       <h2>Users</h2>
       <table>
@@ -30,14 +21,16 @@ const UserList = () => {
             .sort((a, b) => b.blogs.length - a.blogs.length)
             .map((user) => (
               <tr key={user.id}>
-                <td>{user.name}</td>
+                <td>
+                  <Link to={`/users/${user.id}`}>{user.name}</Link>
+                </td>
                 <td>{user.blogs.length}</td>
               </tr>
             ))}
         </tbody>
       </table>
     </div>
-  )
+  ) : null
 }
 
 export default UserList

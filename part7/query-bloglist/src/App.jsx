@@ -1,17 +1,27 @@
 import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 
 import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
-import { useInitializeUser, useLogout, useUserValue } from './context/UserContext'
+import User from './components/User'
 import UserList from './components/UserList'
+import { useInitializeUser, useLogout, useUserValue } from './context/UserContext'
+import userService from './services/users'
 
 const App = () => {
   const initializeUser = useInitializeUser()
   const user = useUserValue()
   const logout = useLogout()
+
+  useQuery({
+    queryKey: ['users'],
+    queryFn: userService.getAll,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  })
 
   useEffect(() => {
     initializeUser()
@@ -39,6 +49,7 @@ const App = () => {
               }
             />
             <Route path='/users' element={<UserList />} />
+            <Route path='/users/:id' element={<User />} />
           </Routes>
         </div>
       )}
