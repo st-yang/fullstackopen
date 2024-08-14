@@ -1,21 +1,52 @@
 import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNotification } from '../context/NotificationContext'
+import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
-const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
+const Blog = ({ user, blog }) => {
   const [expanded, setExpanded] = useState(false)
   const toggleExpanded = () => {
     setExpanded(!expanded)
   }
   const buttonLabel = expanded ? 'hide' : 'view'
 
-  const likeBlog = () => {
-    const updatedBlog = { ...blog, likes: blog.likes + 1 }
-    updateBlog(updatedBlog)
+  const notification = useNotification()
+  const queryClient = useQueryClient()
+
+  const updateBlogMutation = useMutation({
+    mutationFn: blogService.update,
+    onSuccess: (blog) => {
+      const blogs = queryClient.getQueryData(['blogs'])
+      queryClient.setQueryData(
+        ['blogs'],
+        blogs.map((b) => (b.id !== blog.id ? b : blog)),
+      )
+
+      notification(`You liked '${blog.title}' by ${blog.author}`)
+    },
+  })
+
+  const removeBlogMutation = useMutation({
+    mutationFn: blogService.remove,
+    onSuccess: () => {
+      const blogs = queryClient.getQueryData(['blogs'])
+      queryClient.setQueryData(
+        ['blogs'],
+        blogs.filter((b) => b.id !== blog.id),
+      )
+
+      notification(`blog ${blog.title} by ${blog.author} removed`)
+    },
+  })
+
+  const handleLikeBlog = () => {
+    updateBlogMutation.mutate({ ...blog, likes: blog.likes + 1 })
   }
 
-  const removeBlog = () => {
+  const handleRemoveBlog = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      deleteBlog(blog)
+      removeBlogMutation.mutate(blog.id)
     }
   }
   const showRemove = user && (blog.user === user.id || blog.user.id === user.id)
@@ -40,10 +71,10 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
         <div>
           <div>{blog.url}</div>
           <div>
-            likes {blog.likes} <button onClick={likeBlog}>like</button>
+            likes {blog.likes} <button onClick={handleLikeBlog}>like</button>
           </div>
           {blog.user && <div>{blog.user.name}</div>}
-          {showRemove && <button onClick={removeBlog}>remove</button>}
+          {showRemove && <button onClick={handleRemoveBlog}>remove</button>}
         </div>
       )}
     </div>
@@ -53,8 +84,6 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   user: PropTypes.object,
-  updateBlog: PropTypes.func,
-  deleteBlog: PropTypes.func,
 }
 
 export default Blog

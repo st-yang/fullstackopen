@@ -1,5 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-
+import { useQuery } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
@@ -55,19 +54,6 @@ const App = () => {
 
   const loginForm = () => <LoginForm handleLogin={handleLogin} />
 
-  const updateBlog = (blogObject) => {
-    blogService.update(blogObject.id, blogObject).then((returnedBlog) => {
-      // setBlogs(blogs.map((b) => (b.id === blogObject.id ? blogObject : b)))
-    })
-  }
-
-  const deleteBlog = (blogObject) => {
-    blogService.remove(blogObject.id).then(() => {
-      // setBlogs(blogs.filter((b) => b.id !== blogObject.id))
-      notification(`blog ${blogObject.title} by ${blogObject.author} removed`)
-    })
-  }
-
   return (
     <div>
       {user === null ? <h2>Log in to application</h2> : <h2>blogs</h2>}
@@ -83,7 +69,7 @@ const App = () => {
           {blogs
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
-              <Blog key={blog.id} user={user} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />
+              <Blog key={blog.id} user={user} blog={blog} />
             ))}
         </div>
       )}

@@ -7,24 +7,12 @@ const setToken = newToken => {
   token = `Bearer ${newToken}`
 }
 
-const create = newObject => axios.post(baseUrl, newObject, { headers: { Authorization: token } }).then(res => res.data)
+const create = (obj) => axios.post(baseUrl, obj, { headers: { Authorization: token } }).then(res => res.data)
 
 const getAll = () => axios.get(baseUrl).then(res => res.data)
 
-const update = async (id, newObject) => {
-  const config = {
-    headers: { Authorization: token },
-  }
-  const response = await axios.put(`${baseUrl}/${id}`, newObject, config)
-  return response.data
-}
+const update = (obj) => axios.put(`${baseUrl}/${obj.id}`, obj, { headers: { Authorization: token } }).then(res => res.data)
 
-const remove = async (id) => {
-  const config = {
-    headers: { Authorization: token },
-  }
-  const response = await axios.delete(`${baseUrl}/${id}`, config)
-  return response.data
-}
+const remove = (id) => axios.delete(`${baseUrl}/${id}`, { headers: { Authorization: token } }).then(res => res.data)
 
 export default { getAll, create, update, remove, setToken }
