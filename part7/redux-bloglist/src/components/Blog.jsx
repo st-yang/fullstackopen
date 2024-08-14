@@ -21,7 +21,7 @@ const Blog = ({ user, blog }) => {
       dispatch(removeBlog(blog))
     }
   }
-  const showRemove = user && blog.user.username === user.username
+  const showRemove = user && (blog.user === user.id || blog.user.id === user.id)
 
   const blogStyle = {
     paddingTop: 10,
