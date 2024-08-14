@@ -14,7 +14,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeUser())
     dispatch(initializeBlogs())
-  }, [dispatch])
+  }, [])
 
   return (
     <div>
