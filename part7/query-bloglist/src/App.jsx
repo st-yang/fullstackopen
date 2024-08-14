@@ -1,24 +1,16 @@
-import { useState, useEffect, useRef } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+
+import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import { useNotification } from './context/NotificationContext'
 
 const App = () => {
-  const notification = useNotification()
-
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-
-  const blogFormRef = useRef()
-
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistAppUser')
@@ -28,6 +20,21 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const notification = useNotification()
+
+  const result = useQuery({
+    queryKey: ['blogs'],
+    queryFn: blogService.getAll,
+    refetchOnWindowFocus: false,
+    retry: 1,
+  })
+
+  if (result.isLoading) {
+    return <div>loading data...</div>
+  }
+
+  const blogs = result.data
 
   const handleLogin = async ({ username, password }) => {
     try {
@@ -48,32 +55,18 @@ const App = () => {
 
   const loginForm = () => <LoginForm handleLogin={handleLogin} />
 
-  const createBlog = (blogObject) => {
-    blogFormRef.current.toggleVisibility()
-    blogService.create(blogObject).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog))
-      notification(`a new blog ${blogObject.title} by ${blogObject.author} added`)
-    })
-  }
-
   const updateBlog = (blogObject) => {
     blogService.update(blogObject.id, blogObject).then((returnedBlog) => {
-      setBlogs(blogs.map((b) => (b.id === blogObject.id ? blogObject : b)))
+      // setBlogs(blogs.map((b) => (b.id === blogObject.id ? blogObject : b)))
     })
   }
 
   const deleteBlog = (blogObject) => {
     blogService.remove(blogObject.id).then(() => {
-      setBlogs(blogs.filter((b) => b.id !== blogObject.id))
+      // setBlogs(blogs.filter((b) => b.id !== blogObject.id))
       notification(`blog ${blogObject.title} by ${blogObject.author} removed`)
     })
   }
-
-  const blogForm = () => (
-    <Togglable buttonLabel='new blog' ref={blogFormRef}>
-      <BlogForm createBlog={createBlog} />
-    </Togglable>
-  )
 
   return (
     <div>
@@ -86,7 +79,7 @@ const App = () => {
           <p>
             {user.name} logged in <button onClick={handleLogout}>logout</button>
           </p>
-          {blogForm()}
+          <BlogForm />
           {blogs
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (

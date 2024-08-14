@@ -1,45 +1,60 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useRef } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useNotification } from '../context/NotificationContext'
+import blogService from '../services/blogs'
+import Togglable from './Togglable'
 
-const BlogForm = ({ createBlog }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+const BlogForm = () => {
+  const notification = useNotification()
+  const queryClient = useQueryClient()
+  const blogFormRef = useRef()
+
+  const newBlogMutation = useMutation({
+    mutationFn: blogService.create,
+    onSuccess: (newBlog) => {
+      const blogs = queryClient.getQueryData(['blogs'])
+      queryClient.setQueryData(['blogs'], blogs.concat(newBlog))
+
+      blogFormRef.current.toggleVisibility()
+      notification(`a new blog ${newBlog.title} by ${newBlog.author} added`)
+    },
+    onError: (error) => {
+      notification(error.response.data.error)
+    },
+  })
 
   const addBlog = (event) => {
     event.preventDefault()
-    createBlog({ title, author, url, likes: 0 })
 
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    const title = event.target.title.value
+    const author = event.target.author.value
+    const url = event.target.url.value
+
+    event.target.title.value = ''
+    event.target.author.value = ''
+    event.target.url.value = ''
+
+    newBlogMutation.mutate({ title, author, url, likes: 0 })
   }
 
   return (
-    <div>
+    <Togglable buttonLabel='new blog' ref={blogFormRef}>
       <h2>Create a new blog</h2>
 
       <form onSubmit={addBlog}>
         <div>
-          title:
-          <input data-testid='title' value={title} onChange={(event) => setTitle(event.target.value)} />
+          title: <input data-testid='title' name='title' />
         </div>
         <div>
-          author:
-          <input data-testid='author' value={author} onChange={(event) => setAuthor(event.target.value)} />
+          author: <input data-testid='author' name='author' />
         </div>
         <div>
-          url:
-          <input data-testid='url' value={url} onChange={(event) => setUrl(event.target.value)} />
+          url: <input data-testid='url' name='url' />
         </div>
         <button type='submit'>create</button>
       </form>
-    </div>
+    </Togglable>
   )
-}
-
-BlogForm.propTypes = {
-  createBlog: PropTypes.func.isRequired,
 }
 
 export default BlogForm
