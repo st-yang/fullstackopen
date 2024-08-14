@@ -1,12 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
-import Blog from './components/Blog'
+import { useNotification } from './context/NotificationContext'
 import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
+import BlogList from './components/BlogList'
+import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import BlogForm from './components/BlogForm'
-import LoginForm from './components/LoginForm'
-import { useNotification } from './context/NotificationContext'
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -21,19 +20,6 @@ const App = () => {
   }, [])
 
   const notification = useNotification()
-
-  const result = useQuery({
-    queryKey: ['blogs'],
-    queryFn: blogService.getAll,
-    refetchOnWindowFocus: false,
-    retry: 1,
-  })
-
-  if (result.isLoading) {
-    return <div>loading data...</div>
-  }
-
-  const blogs = result.data
 
   const handleLogin = async ({ username, password }) => {
     try {
@@ -66,11 +52,7 @@ const App = () => {
             {user.name} logged in <button onClick={handleLogout}>logout</button>
           </p>
           <BlogForm />
-          {blogs
-            .sort((a, b) => b.likes - a.likes)
-            .map((blog) => (
-              <Blog key={blog.id} user={user} blog={blog} />
-            ))}
+          <BlogList user={user} />
         </div>
       )}
     </div>
