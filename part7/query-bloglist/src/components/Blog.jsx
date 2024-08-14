@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNotification } from '../context/NotificationContext'
+import { useUserValue } from '../context/UserContext'
 import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
-const Blog = ({ user, blog }) => {
+const Blog = ({ blog }) => {
   const [expanded, setExpanded] = useState(false)
   const toggleExpanded = () => {
     setExpanded(!expanded)
@@ -49,6 +50,7 @@ const Blog = ({ user, blog }) => {
       removeBlogMutation.mutate(blog.id)
     }
   }
+  const user = useUserValue()
   const showRemove = user && (blog.user === user.id || blog.user.id === user.id)
 
   const blogStyle = {
@@ -83,7 +85,6 @@ const Blog = ({ user, blog }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  user: PropTypes.object,
 }
 
 export default Blog

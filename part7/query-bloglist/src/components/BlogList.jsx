@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import blogService from '../services/blogs'
 import Blog from './Blog'
 
-const BlogList = ({ user }) => {
+const BlogList = () => {
   const result = useQuery({
     queryKey: ['blogs'],
     queryFn: blogService.getAll,
@@ -19,7 +19,7 @@ const BlogList = ({ user }) => {
   return blogs
     .slice()
     .sort((a, b) => b.likes - a.likes)
-    .map((blog) => <Blog key={blog.id} user={user} blog={blog} />)
+    .map((blog) => <Blog key={blog.id} blog={blog} />)
 }
 
 export default BlogList

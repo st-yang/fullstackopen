@@ -1,58 +1,33 @@
-import { useState, useEffect } from 'react'
-import { useNotification } from './context/NotificationContext'
-import Notification from './components/Notification'
+import { useEffect } from 'react'
+
 import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
-import blogService from './services/blogs'
-import loginService from './services/login'
+import Notification from './components/Notification'
+import { useInitializeUser, useLogout, useUserValue } from './context/UserContext'
 
 const App = () => {
-  const [user, setUser] = useState(null)
+  const initializeUser = useInitializeUser()
+  const user = useUserValue()
+  const logout = useLogout()
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBloglistAppUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
+    initializeUser()
   }, [])
-
-  const notification = useNotification()
-
-  const handleLogin = async ({ username, password }) => {
-    try {
-      const user = await loginService.login({ username, password })
-
-      window.localStorage.setItem('loggedBloglistAppUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
-    } catch (exception) {
-      notification('wrong username or password', 'error')
-    }
-  }
-
-  const handleLogout = () => {
-    window.localStorage.removeItem('loggedBloglistAppUser')
-    setUser(null)
-  }
-
-  const loginForm = () => <LoginForm handleLogin={handleLogin} />
 
   return (
     <div>
       {user === null ? <h2>Log in to application</h2> : <h2>blogs</h2>}
       <Notification />
       {user === null ? (
-        loginForm()
+        <LoginForm />
       ) : (
         <div>
           <p>
-            {user.name} logged in <button onClick={handleLogout}>logout</button>
+            {user.name} logged in <button onClick={logout}>logout</button>
           </p>
           <BlogForm />
-          <BlogList user={user} />
+          <BlogList />
         </div>
       )}
     </div>
