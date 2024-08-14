@@ -28,7 +28,7 @@ const App = () => {
             {user.name} logged in <button onClick={() => dispatch(logout())}>logout</button>
           </p>
           <BlogForm />
-          <BlogList user={user} />
+          <BlogList />
         </div>
       )}
     </div>

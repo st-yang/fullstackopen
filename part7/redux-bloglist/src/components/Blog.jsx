@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import PropTypes from 'prop-types'
 
-const Blog = ({ user, blog }) => {
+const Blog = ({ blog }) => {
+  const user = useSelector((state) => state.user)
   const dispatch = useDispatch()
 
   const [expanded, setExpanded] = useState(false)
