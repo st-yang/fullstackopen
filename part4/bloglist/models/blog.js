@@ -20,7 +20,7 @@ const blogSchema = new mongoose.Schema({
     default: 0,
   },
   comments: {
-    type: Array,
+    type: [String],
     default: [],
   },
   user: {
