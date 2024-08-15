@@ -1,25 +1,16 @@
-import { useQuery } from '@tanstack/react-query'
-import blogService from '../services/blogs'
-import Blog from './Blog'
+import { useQueryClient } from '@tanstack/react-query'
+import BlogItem from './BlogItem'
 
 const BlogList = () => {
-  const result = useQuery({
-    queryKey: ['blogs'],
-    queryFn: blogService.getAll,
-    refetchOnWindowFocus: false,
-    retry: 1,
-  })
-
-  if (result.isLoading) {
-    return <div>loading data...</div>
-  }
-
-  const blogs = result.data
+  const queryClient = useQueryClient()
+  const blogs = queryClient.getQueryData(['blogs'])
 
   return blogs
-    .slice()
-    .sort((a, b) => b.likes - a.likes)
-    .map((blog) => <Blog key={blog.id} blog={blog} />)
+    ? blogs
+        .slice()
+        .sort((a, b) => b.likes - a.likes)
+        .map((blog) => <BlogItem key={blog.id} blog={blog} />)
+    : null
 }
 
 export default BlogList
