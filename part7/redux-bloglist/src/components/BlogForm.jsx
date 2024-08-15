@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { useDispatch } from 'react-redux'
+import { Button, TextField } from '@mui/material'
 import { createBlog } from '../reducers/blogReducer'
 import Togglable from './Togglable'
 
@@ -28,15 +29,17 @@ const BlogForm = () => {
 
       <form onSubmit={addBlog}>
         <div>
-          title: <input data-testid='title' name='title' />
+          <TextField data-testid='title' name='title' label='title' />
         </div>
         <div>
-          author: <input data-testid='author' name='author' />
+          <TextField data-testid='author' name='author' label='author' />
         </div>
         <div>
-          url: <input data-testid='url' name='url' />
+          <TextField data-testid='url' name='url' label='url' />
         </div>
-        <button type='submit'>create</button>
+        <Button variant='contained' color='primary' type='submit'>
+          create
+        </Button>
       </form>
     </Togglable>
   )

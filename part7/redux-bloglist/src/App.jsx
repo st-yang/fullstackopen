@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
+import { Container } from '@mui/material'
 
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
@@ -24,7 +25,7 @@ const App = () => {
   }, [])
 
   return (
-    <div>
+    <Container>
       <Notification />
       {user === null ? (
         <LoginForm />
@@ -48,7 +49,7 @@ const App = () => {
           </Routes>
         </div>
       )}
-    </div>
+    </Container>
   )
 }
 

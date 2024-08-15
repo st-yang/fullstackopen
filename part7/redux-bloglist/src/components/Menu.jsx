@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { AppBar, Button, Toolbar } from '@mui/material'
 import { logout } from '../reducers/userReducer'
 
 const Menu = () => {
@@ -16,17 +17,22 @@ const Menu = () => {
   }
 
   return (
-    <div style={menuStyle}>
-      <Link style={padding} to='/'>
-        blogs
-      </Link>
-      <Link style={padding} to='/users'>
-        users
-      </Link>
-      <span>
-        {user.name} logged in <button onClick={() => dispatch(logout())}>logout</button>
-      </span>
-    </div>
+    <AppBar position='static'>
+      <Toolbar>
+        <Button color='inherit' component={Link} to='/'>
+          blogs
+        </Button>
+        <Button color='inherit' component={Link} to='/users'>
+          users
+        </Button>
+        <span>
+          {user.name} logged in{' '}
+          <Button color='inherit' onClick={() => dispatch(logout())}>
+            logout
+          </Button>
+        </span>
+      </Toolbar>
+    </AppBar>
   )
 }
 

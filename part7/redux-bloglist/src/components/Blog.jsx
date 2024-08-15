@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useMatch } from 'react-router-dom'
+import { Button, TextField } from '@mui/material'
 import { commentBlog, likeBlog, removeBlog } from '../reducers/blogReducer'
 
 const Blog = () => {
@@ -40,15 +41,24 @@ const Blog = () => {
       <div>
         <a href={blog.url}>{blog.url}</a>
         <div>
-          {blog.likes} likes<button onClick={handleLikeBlog}>like</button>
+          {blog.likes} likes
+          <Button variant='contained' color='primary' onClick={handleLikeBlog}>
+            like
+          </Button>
         </div>
         {blog.user && <div>added by {blog.user.name}</div>}
-        {showRemove && <button onClick={handleRemoveBlog}>remove</button>}
+        {showRemove && (
+          <Button variant='contained' color='primary' onClick={handleRemoveBlog}>
+            remove
+          </Button>
+        )}
       </div>
       <h3>comments</h3>
       <form onSubmit={addComment}>
-        <input data-testid='comment' name='comment' />
-        <button type='submit'>add comment</button>
+        <TextField data-testid='comment' name='comment' label='comment' />
+        <Button variant='contained' color='primary' type='submit'>
+          add comment
+        </Button>
       </form>
       <ul>
         {blog.comments.map((comment) => (
