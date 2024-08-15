@@ -65,4 +65,30 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
+blogsRouter.post('/:id/comments', middleware.userExtractor, async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+  if (blog) {
+    const { comment } = request.body
+
+    if (comment) {
+      blog.comments.push(comment)
+      const savedBlog = await blog.save()
+      response.status(201).json(savedBlog)
+    } else {
+      response.status(400).json({ error: 'comment is required' })
+    }
+  } else {
+    response.status(404).end()
+  }
+})
+
+blogsRouter.get('/:id/comments', async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+  if (blog) {
+    response.json(blog.comments)
+  } else {
+    response.status(404).end()
+  }
+})
+
 module.exports = blogsRouter

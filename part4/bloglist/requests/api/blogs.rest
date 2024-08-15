@@ -38,3 +38,15 @@ content-type: application/json
 ### DELETE blog with id 66b1201c0db2424c7533db76
 DELETE http://localhost:3001/api/blogs/66b1201c0db2424c7533db76
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjZiMTA3NGY1MWQ2NjNlYWUzM2I0NmViIiwiaWF0IjoxNzIyODg4NTU3fQ.paqTBIs5irgCtp4xKtJr-9xxHS-G4KOe6UXrP8cMAvs
+
+### GET blog comments
+GET http://localhost:3001/api/blogs/66b36fb613ede074cbf98da7/comments
+
+### POST new comment
+POST http://localhost:3001/api/blogs/66b36fb613ede074cbf98da7/comments
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjZiMTA3NGY1MWQ2NjNlYWUzM2I0NmViIiwiaWF0IjoxNzIyODg4NTU3fQ.paqTBIs5irgCtp4xKtJr-9xxHS-G4KOe6UXrP8cMAvs
+
+{
+    "comment": "New comment"
+}

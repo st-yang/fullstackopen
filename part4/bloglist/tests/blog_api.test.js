@@ -278,6 +278,99 @@ describe('when there is initially some blogs saved', () => {
       assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
     })
   })
+
+  describe('view comments of blog', () => {
+    test('comments are returned correctly', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+
+      const blogToView = blogsAtStart[0]
+
+      const resultComments = await api
+        .get(`/api/blogs/${blogToView.id}/comments`)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      assert.deepStrictEqual(resultComments.body, blogToView.comments)
+    })
+  })
+
+  describe('post comments to blog', () => {
+    test('succeeds with valid data', async () => {
+      const usersAtStart = await helper.usersInDb()
+      const user = usersAtStart[0]
+      const userForToken = {
+        username: user.username,
+        id: user.id,
+      }
+      const token = jwt.sign(userForToken, process.env.SECRET)
+
+      const newComment = {
+        comment: 'New Comment',
+      }
+
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToUpdate = blogsAtStart[0]
+
+      await api
+        .post(`/api/blogs/${blogToUpdate.id}/comments`)
+        .auth(token, { type: 'bearer' })
+        .send(newComment)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+      const blogsAtEnd = await helper.blogsInDb()
+      const blogUpdated = blogsAtEnd[0]
+
+      assert.strictEqual(blogToUpdate.comments.length + 1, blogUpdated.comments.length)
+      assert.strictEqual(blogUpdated.comments.at(-1), 'New Comment')
+    })
+
+    test('fails with status code 400 if data invalid', async () => {
+      const usersAtStart = await helper.usersInDb()
+      const user = usersAtStart[0]
+      const userForToken = {
+        username: user.username,
+        id: user.id,
+      }
+      const token = jwt.sign(userForToken, process.env.SECRET)
+
+      const newComment = {
+      }
+
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToUpdate = blogsAtStart[0]
+
+      await api
+        .post(`/api/blogs/${blogToUpdate.id}/comments`)
+        .auth(token, { type: 'bearer' })
+        .send(newComment)
+        .expect(400)
+
+      const blogsAtEnd = await helper.blogsInDb()
+      const blogUpdated = blogsAtEnd[0]
+
+      assert.strictEqual(blogToUpdate.comments.length, blogUpdated.comments.length)
+    })
+
+    test('fails with status code 401 if token not provided, invalid, or expired', async () => {
+      const newComment = {
+        comment: 'New Comment',
+      }
+
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToUpdate = blogsAtStart[0]
+
+      await api
+        .post(`/api/blogs/${blogToUpdate.id}/comments`)
+        .send(newComment)
+        .expect(401)
+
+      const blogsAtEnd = await helper.blogsInDb()
+      const blogUpdated = blogsAtEnd[0]
+
+      assert.strictEqual(blogToUpdate.comments.length, blogUpdated.comments.length)
+    })
+  })
 })
 
 after(async () => {
