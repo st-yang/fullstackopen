@@ -6,17 +6,17 @@ import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
+import Menu from './components/Menu'
 import Notification from './components/Notification'
 import User from './components/User'
 import UserList from './components/UserList'
-import { useInitializeUser, useLogout, useUserValue } from './context/UserContext'
+import { useInitializeUser, useUserValue } from './context/UserContext'
 import blogService from './services/blogs'
 import userService from './services/users'
 
 const App = () => {
   const initializeUser = useInitializeUser()
   const user = useUserValue()
-  const logout = useLogout()
 
   useQuery({
     queryKey: ['users'],
@@ -37,20 +37,18 @@ const App = () => {
 
   return (
     <div>
-      {user === null ? <h2>Log in to application</h2> : <h2>blogs</h2>}
       <Notification />
       {user === null ? (
         <LoginForm />
       ) : (
         <div>
-          <p>
-            {user.name} logged in <button onClick={logout}>logout</button>
-          </p>
+          <Menu />
           <Routes>
             <Route
               path='/'
               element={
                 <div>
+                  <h2>blogs</h2>
                   <BlogForm />
                   <BlogList />
                 </div>

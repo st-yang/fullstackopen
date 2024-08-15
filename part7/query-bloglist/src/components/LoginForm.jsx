@@ -16,17 +16,20 @@ const LoginForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        username
-        <input data-testid='username' type='text' name='username' />
-      </div>
-      <div>
-        password
-        <input data-testid='password' type='password' name='password' />
-      </div>
-      <button type='submit'>login</button>
-    </form>
+    <div>
+      <h2>Log in to application</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          username
+          <input data-testid='username' type='text' name='username' />
+        </div>
+        <div>
+          password
+          <input data-testid='password' type='password' name='password' />
+        </div>
+        <button type='submit'>login</button>
+      </form>
+    </div>
   )
 }
 
