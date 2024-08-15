@@ -18,7 +18,7 @@ const Blog = ({ user, blog, updateBlog, deleteBlog }) => {
       deleteBlog(blog)
     }
   }
-  const showRemove = user && (blog.user === user.id || blog.user.id === user.id)
+  const showRemove = user && (blog.user === user.id || (blog.user && blog.user.id === user.id))
 
   const blogStyle = {
     paddingTop: 10,

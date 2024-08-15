@@ -50,7 +50,7 @@ const Blog = () => {
       removeBlogMutation.mutate(blog.id)
     }
   }
-  const showRemove = user && (blog.user === user.id || blog.user.id === user.id)
+  const showRemove = user && (blog.user === user.id || (blog.user && blog.user.id === user.id))
 
   return (
     <div>
@@ -65,6 +65,12 @@ const Blog = () => {
         {blog.user && <div>added by {blog.user.name}</div>}
         {showRemove && <button onClick={handleRemoveBlog}>remove</button>}
       </div>
+      <h3>comments</h3>
+      <ul>
+        {blog.comments.map((comment) => (
+          <li key={comment}>{comment}</li>
+        ))}
+      </ul>
     </div>
   )
 }
