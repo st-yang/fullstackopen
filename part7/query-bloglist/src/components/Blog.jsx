@@ -39,6 +39,22 @@ const Blog = () => {
     },
   })
 
+  const newCommentMutation = useMutation({
+    mutationFn: blogService.comment,
+    onSuccess: (blog) => {
+      const blogs = queryClient.getQueryData(['blogs'])
+      queryClient.setQueryData(
+        ['blogs'],
+        blogs.map((b) => (b.id !== blog.id ? b : blog)),
+      )
+
+      notification(`You commented '${blog.title}' by ${blog.author}`)
+    },
+    onError: (error) => {
+      notification(error.response.data.error)
+    },
+  })
+
   if (!blog) return null
 
   const handleLikeBlog = () => {
@@ -51,6 +67,15 @@ const Blog = () => {
     }
   }
   const showRemove = user && (blog.user === user.id || (blog.user && blog.user.id === user.id))
+
+  const addComment = (event) => {
+    event.preventDefault()
+
+    const comment = event.target.comment.value
+    event.target.comment.value = ''
+
+    newCommentMutation.mutate({ id: blog.id, comment })
+  }
 
   return (
     <div>
@@ -66,6 +91,10 @@ const Blog = () => {
         {showRemove && <button onClick={handleRemoveBlog}>remove</button>}
       </div>
       <h3>comments</h3>
+      <form onSubmit={addComment}>
+        <input data-testid='comment' name='comment' />
+        <button type='submit'>add comment</button>
+      </form>
       <ul>
         {blog.comments.map((comment) => (
           <li key={comment}>{comment}</li>

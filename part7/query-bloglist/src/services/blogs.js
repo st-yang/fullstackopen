@@ -15,4 +15,6 @@ const update = (obj) => axios.put(`${baseUrl}/${obj.id}`, obj, { headers: { Auth
 
 const remove = (id) => axios.delete(`${baseUrl}/${id}`, { headers: { Authorization: token } }).then(res => res.data)
 
-export default { getAll, create, update, remove, setToken }
+const comment = ({ id, comment }) => axios.post(`${baseUrl}/${id}/comments`, { comment }, { headers: { Authorization: token } }).then(res => res.data)
+
+export default { getAll, create, update, remove, comment, setToken }
