@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useMatch } from 'react-router-dom'
-import { likeBlog, removeBlog } from '../reducers/blogReducer'
+import { commentBlog, likeBlog, removeBlog } from '../reducers/blogReducer'
 
 const Blog = () => {
   const blogs = useSelector(({ blogs }) => blogs)
@@ -23,6 +23,15 @@ const Blog = () => {
   }
   const showRemove = user && (blog.user === user.id || (blog.user && blog.user.id === user.id))
 
+  const addComment = (event) => {
+    event.preventDefault()
+    const comment = event.target.comment.value
+
+    dispatch(commentBlog(blog, comment))
+
+    event.target.comment.value = ''
+  }
+
   return (
     <div>
       <h2>
@@ -37,6 +46,10 @@ const Blog = () => {
         {showRemove && <button onClick={handleRemoveBlog}>remove</button>}
       </div>
       <h3>comments</h3>
+      <form onSubmit={addComment}>
+        <input data-testid='comment' name='comment' />
+        <button type='submit'>add comment</button>
+      </form>
       <ul>
         {blog.comments.map((comment) => (
           <li key={comment}>{comment}</li>

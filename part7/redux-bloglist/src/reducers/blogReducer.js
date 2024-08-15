@@ -47,7 +47,6 @@ export const likeBlog = (blog) => {
     }
     const updatedBlog = await blogService.update(blog.id, likedBlog)
     dispatch(updateBlog(updatedBlog))
-    console.log('updatedBlog:', updatedBlog)
     dispatch(setNotification(`You liked '${updatedBlog.title}' by ${updatedBlog.author}`))
   }
 }
@@ -57,6 +56,14 @@ export const removeBlog = (blog) => {
     await blogService.remove(blog.id)
     dispatch(deleteBlog(blog))
     dispatch(setNotification(`blog ${blog.title} by ${blog.author} removed`))
+  }
+}
+
+export const commentBlog = (blog, comment) => {
+  return async dispatch => {
+    const updatedBlog = await blogService.comment(blog.id, { comment })
+    dispatch(updateBlog(updatedBlog))
+    dispatch(setNotification(`You commented '${updatedBlog.title}' by ${updatedBlog.author}`))
   }
 }
 
