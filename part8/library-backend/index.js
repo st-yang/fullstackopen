@@ -2,6 +2,26 @@ const { ApolloServer } = require('@apollo/server')
 const { startStandaloneServer } = require('@apollo/server/standalone')
 const { v1: uuid } = require('uuid')
 
+const mongoose = require('mongoose')
+mongoose.set('strictQuery', false)
+const Author = require('./models/author')
+const Book = require('./models/book')
+
+require('dotenv').config()
+
+const MONGODB_URI = process.env.MONGODB_URI
+
+console.log('connecting to', MONGODB_URI)
+
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connection to MongoDB:', error.message)
+  })
+
 let authors = [
   {
     name: 'Robert Martin',
@@ -139,7 +159,7 @@ const resolvers = {
   Query: {
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allAuthors: () => authors,
+    allAuthors: async () => Author.find({}),
     allBooks: (root, args) => {
       let result = books
 
@@ -154,18 +174,24 @@ const resolvers = {
     },
   },
   Author: {
-    bookCount: (author) => books.filter((book) => book.author === author.name).length,
+    bookCount: async (author) => {
+      const books = await Book.find({ author: author.id })
+      return books.length
+    },
   },
   Mutation: {
-    addBook: (root, args) => {
-      if (!authors.find((a) => a.name === args.author)) {
-        const author = { name: args.author, id: uuid() }
-        authors = authors.concat(author)
+    addBook: async (root, args) => {
+      let author = await Author.findOne({ name: args.author })
+      if (!author) {
+        author = new Author({ name: args.author })
+        await author.save()
       }
 
-      const book = { ...args, id: uuid() }
-      books = books.concat(book)
-      return book
+      const book = new Book({ ...args, author: author.id })
+      await book.save()
+
+      const populatedBook = await book.populate('author')
+      return populatedBook
     },
     editAuthor: (root, args) => {
       const author = authors.find((a) => a.name === args.name)
