@@ -40,12 +40,12 @@ const resolvers = {
     },
     me: (root, args, context) => context.currentUser,
   },
-  // Author: {
-  //   bookCount: async (author) => {
-  //     const books = await Book.find({ author: author.id })
-  //     return books.length
-  //   },
-  // },
+  Author: {
+    bookCount: async (author) => {
+      const books = await Book.find({ author: author.id })
+      return books.length
+    },
+  },
   Mutation: {
     addBook: async (root, args, context) => {
       if (!context.currentUser) {
@@ -58,19 +58,18 @@ const resolvers = {
 
       let author = await Author.findOne({ name: args.author })
       if (!author) {
-        author = new Author({ name: args.author, bookCount: 0 })
-      }
-      author.bookCount += 1
-      try {
-        await author.save()
-      } catch (error) {
-        throw new GraphQLError('Saving author failed', {
-          extensions: {
-            code: 'BAD_USER_INPUT',
-            invalidArgs: args.name,
-            error,
-          },
-        })
+        author = new Author({ name: args.author })
+        try {
+          await author.save()
+        } catch (error) {
+          throw new GraphQLError('Saving author failed', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+              invalidArgs: args.name,
+              error,
+            },
+          })
+        }
       }
 
       const book = new Book({ ...args, author: author.id })
