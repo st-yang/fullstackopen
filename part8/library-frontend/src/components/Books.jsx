@@ -5,9 +5,14 @@ import { ALL_BOOKS, ALL_GENRES } from '../queries'
 
 const Books = (props) => {
   const [genre, setGenre] = useState('')
-  const result = useQuery(ALL_BOOKS, {
-    variables: { genre },
-  })
+  const result = useQuery(
+    ALL_BOOKS,
+    genre
+      ? {
+          variables: { genre },
+        }
+      : {},
+  )
   const allGenres = useQuery(ALL_GENRES)
 
   if (result.loading || allGenres.loading) {
