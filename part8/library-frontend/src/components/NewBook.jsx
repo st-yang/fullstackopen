@@ -14,7 +14,7 @@ const NewBook = (props) => {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
     onError: (error) => {
       const messages = error.graphQLErrors
-        .map((e) => `${e.message} (${e.extensions.code}): ${e.extensions.error.message}`)
+        .map((e) => `${e.message} (${e.extensions?.code}): ${e.extensions.error?.message}`)
         .join('\n')
       props.setError(messages)
     },

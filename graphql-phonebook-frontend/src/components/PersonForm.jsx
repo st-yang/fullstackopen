@@ -13,7 +13,7 @@ const PersonForm = ({ setError }) => {
     // refetchQueries: [{ query: ALL_PERSONS }],
     onError: (error) => {
       const messages = error.graphQLErrors
-        .map((e) => `${e.message} (${e.extensions.code}): ${e.extensions.error.message}`)
+        .map((e) => `${e.message} (${e.extensions?.code}): ${e.extensions.error?.message}`)
         .join('\n')
       setError(messages)
     },

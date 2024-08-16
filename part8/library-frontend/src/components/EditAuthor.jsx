@@ -11,7 +11,7 @@ const EditAuthor = ({ setError, authors }) => {
     refetchQueries: [{ query: ALL_AUTHORS }],
     onError: (error) => {
       const messages = error.graphQLErrors
-        .map((e) => `${e.message} (${e.extensions.code}): ${e.extensions.error.message}`)
+        .map((e) => `${e.message} (${e.extensions?.code}): ${e.extensions.error?.message}`)
         .join('\n')
       setError(messages)
     },
