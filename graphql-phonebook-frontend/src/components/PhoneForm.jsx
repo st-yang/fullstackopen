@@ -7,7 +7,14 @@ const PhoneForm = ({ setError }) => {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
 
-  const [changeNumber, result] = useMutation(EDIT_NUMBER)
+  const [changeNumber, result] = useMutation(EDIT_NUMBER, {
+    onError: (error) => {
+      const messages = error.graphQLErrors
+        .map((e) => `${e.message} (${e.extensions?.code}): ${e.extensions.error?.message}`)
+        .join('\n')
+      setError(messages)
+    },
+  })
 
   useEffect(() => {
     if (result.data && result.data.editNumber === null) {
