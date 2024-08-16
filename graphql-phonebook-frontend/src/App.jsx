@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useApolloClient, useQuery } from '@apollo/client'
 
 import LoginForm from './components/LoginForm'
@@ -14,6 +14,13 @@ const App = () => {
 
   const result = useQuery(ALL_PERSONS)
   const client = useApolloClient()
+
+  useEffect(() => {
+    const loggedToken = localStorage.getItem('phonenumbers-user-token')
+    if (loggedToken) {
+      setToken(loggedToken)
+    }
+  }, [])
 
   if (result.loading) {
     return <div>loading...</div>
