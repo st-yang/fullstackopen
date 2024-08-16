@@ -12,9 +12,9 @@ const resolvers = {
     personCount: async () => Person.collection.countDocuments(),
     allPersons: async (root, args) => {
       if (!args.phone) {
-        return Person.find({})
+        return Person.find({}).populate('friendOf')
       }
-      return Person.find({ phone: { $exists: args.phone === 'YES' } })
+      return Person.find({ phone: { $exists: args.phone === 'YES' } }).populate('friendOf')
     },
     findPerson: async (root, args) => Person.findOne({ name: args.name }),
     me: (root, args, context) => {
@@ -31,9 +31,7 @@ const resolvers = {
   },
   Mutation: {
     addPerson: async (root, args, context) => {
-      const person = new Person({ ...args })
       const currentUser = context.currentUser
-
       if (!currentUser) {
         throw new GraphQLError('not authenticated', {
           extensions: {
@@ -42,6 +40,7 @@ const resolvers = {
         })
       }
 
+      const person = new Person({ ...args, friendOf: currentUser.id })
       try {
         await person.save()
         currentUser.friends = currentUser.friends.concat(person)
