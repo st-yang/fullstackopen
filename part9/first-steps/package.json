@@ -1,0 +1,15 @@
+{
+  "name": "first-steps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "ts-node": "ts-node"
+  },
+  "author": "FatTabbyStudio",
+  "license": "MIT",
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
