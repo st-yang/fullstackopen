@@ -1,7 +1,7 @@
-import { CourseEntry } from '../types'
+import { CoursePart } from '../types'
 
 interface ContentProps {
-  courseParts: CourseEntry[]
+  courseParts: CoursePart[]
 }
 
 const Content = (props: ContentProps) => {
