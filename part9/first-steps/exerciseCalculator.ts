@@ -1,14 +1,36 @@
-interface Exercise {
-  periodLength: number;
-  trainingDays: number;
-  success: boolean;
-  rating: number;
-  ratingDescription: string;
-  target: number;
-  average: number;
+interface ExerciseValues {
+  dailyHours: number[]
+  target: number
 }
 
-const calculateExercises = (dailyHours: number[], target: number): Exercise => {
+const parseArguments = (args: string[]): ExerciseValues => {
+  if (args.length < 4) throw new Error('Not enough arguments')
+
+  if (isNaN(Number(args[2]))) {
+    throw new Error('Target were not number!')
+  }
+  for (let i = 3; i < args.length; i++) {
+    if (isNaN(Number(args[i]))) {
+      throw new Error('Daily Hours values were not numbers!')
+    }
+  }
+  return {
+    dailyHours: args.slice(3).map((h) => Number(h)),
+    target: Number(args[2]),
+  }
+}
+
+interface Exercise {
+  periodLength: number
+  trainingDays: number
+  success: boolean
+  rating: number
+  ratingDescription: string
+  target: number
+  average: number
+}
+
+export const calculateExercises = (dailyHours: number[], target: number): Exercise => {
   const periodLength = dailyHours.length
   let trainingDays = 0
   let totalHours = 0
@@ -45,4 +67,13 @@ const calculateExercises = (dailyHours: number[], target: number): Exercise => {
   }
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+try {
+  const { dailyHours, target } = parseArguments(process.argv)
+  console.log(calculateExercises(dailyHours, target))
+} catch (error: unknown) {
+  let errorMessage = 'Something bad happened.'
+  if (error instanceof Error) {
+    errorMessage += ' Error: ' + error.message
+  }
+  console.log(errorMessage)
+}
