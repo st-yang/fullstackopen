@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios'
+
 import { useState } from 'react'
 import { createDiary } from '../services/diaryService'
 import { Diary, Visibility, Weather } from '../types'
@@ -7,6 +9,8 @@ type DiaryFormProps = {
 }
 
 const DiaryForm = ({ onSubmit }: DiaryFormProps) => {
+  const [error, setError] = useState('')
+
   const [date, setDate] = useState('')
   const [visibility, setVisibility] = useState('')
   const [weather, setWeather] = useState('')
@@ -14,9 +18,16 @@ const DiaryForm = ({ onSubmit }: DiaryFormProps) => {
 
   const diaryCreation = (event: React.SyntheticEvent) => {
     event.preventDefault()
-    createDiary({ date, visibility: visibility as Visibility, weather: weather as Weather, comment }).then((data) => {
-      onSubmit(data)
-    })
+    createDiary({ date, visibility: visibility as Visibility, weather: weather as Weather, comment })
+      .then((data) => {
+        onSubmit(data)
+        setError('')
+      })
+      .catch((error: AxiosError<string>) => {
+        if (error.response) {
+          setError(error.response.data)
+        }
+      })
     setDate('')
     setVisibility('')
     setWeather('')
@@ -26,6 +37,7 @@ const DiaryForm = ({ onSubmit }: DiaryFormProps) => {
   return (
     <div>
       <h2>Add new entry</h2>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
       <form onSubmit={diaryCreation}>
         <div>
           date
