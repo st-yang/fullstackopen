@@ -1,17 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Note } from './types'
+import { createNote, getAllNotes } from './services/noteService'
 
 const App = () => {
   const [newNote, setNewNote] = useState('')
   const [notes, setNotes] = useState<Note[]>([{ id: '1', content: 'testing' }])
 
+  useEffect(() => {
+    getAllNotes().then((data) => {
+      setNotes(data)
+    })
+  }, [])
+
   const noteCreation = (event: React.SyntheticEvent) => {
     event.preventDefault()
-    const noteToAdd = {
-      content: newNote,
-      id: String(notes.length + 1),
-    }
-    setNotes(notes.concat(noteToAdd))
+    createNote({ content: newNote }).then((data) => {
+      setNotes(notes.concat(data))
+    })
     setNewNote('')
   }
 
