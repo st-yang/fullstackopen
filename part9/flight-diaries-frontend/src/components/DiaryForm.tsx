@@ -41,15 +41,30 @@ const DiaryForm = ({ onSubmit }: DiaryFormProps) => {
       <form onSubmit={diaryCreation}>
         <div>
           date
-          <input name='date' value={date} onChange={(event) => setDate(event.target.value)} />
+          <input name='date' type='date' value={date} onChange={(event) => setDate(event.target.value)} />
         </div>
         <div>
-          visibility
-          <input name='visibility' value={visibility} onChange={(event) => setVisibility(event.target.value)} />
+          visibility{' '}
+          {Object.values(Visibility).map((value) => (
+            <span key={value}>
+              {value}
+              <input
+                name='visibility'
+                type='radio'
+                value={value}
+                onChange={(event) => setVisibility(event.target.value)}
+              />
+            </span>
+          ))}
         </div>
         <div>
-          weather
-          <input name='weather' value={weather} onChange={(event) => setWeather(event.target.value)} />
+          weather{' '}
+          {Object.values(Weather).map((value) => (
+            <span key={value}>
+              {value}
+              <input name='weather' type='radio' value={value} onChange={(event) => setWeather(event.target.value)} />
+            </span>
+          ))}
         </div>
         <div>
           comment
