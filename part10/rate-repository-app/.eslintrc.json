@@ -7,6 +7,11 @@
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "babelOptions": {
+      "configFile": "D:/workspace/FullStackOpen/part10/rate-repository-app/babel.config.js"
+    }
+  },
   "env": {
     "react-native/react-native": true
   },
