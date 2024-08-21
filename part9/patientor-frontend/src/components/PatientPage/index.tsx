@@ -6,6 +6,7 @@ import { Favorite, Female, Healing, HealthAndSafety, LocalHospital, Male, Transg
 import patientService from '../../services/patients'
 import { Diagnosis, Entry, Gender, HealthCheckRating, Patient } from '../../types'
 import { assertNever } from '../../utils'
+import EntryForm from './EntryForm'
 
 interface Props {
   diagnoses: Diagnosis[]
@@ -105,6 +106,7 @@ const PatientPage = ({ diagnoses }: Props) => {
       </h2>
       <div>ssn: {patient.ssn}</div>
       <div>occupation: {patient.occupation}</div>
+      <EntryForm patient={patient} setPatient={setPatient} />
       <h3>entries</h3>
       {patient.entries.map((entry) => (
         <EntryDetails key={entry.id} entry={entry} />
