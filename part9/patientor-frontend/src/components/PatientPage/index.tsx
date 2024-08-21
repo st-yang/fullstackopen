@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { Card, CardContent } from '@mui/material'
+import { Favorite, Female, Healing, HealthAndSafety, LocalHospital, Male, Transgender } from '@mui/icons-material'
 
 import patientService from '../../services/patients'
-import { Diagnosis, Gender, Patient } from '../../types'
-import { Female, Male, Transgender } from '@mui/icons-material'
+import { Diagnosis, Entry, Gender, HealthCheckRating, Patient } from '../../types'
+import { assertNever } from '../../utils'
 
 interface Props {
   diagnoses: Diagnosis[]
@@ -36,6 +38,66 @@ const PatientPage = ({ diagnoses }: Props) => {
     }
   }
 
+  const EntryDetails = ({ entry }: { entry: Entry }) => {
+    let icon: JSX.Element
+    let employerName = <></>
+    let healthRate = <></>
+    switch (entry.type) {
+      case 'Hospital':
+        icon = <LocalHospital />
+        break
+      case 'OccupationalHealthcare':
+        icon = <Healing />
+        employerName = <i>{entry.employerName}</i>
+        break
+      case 'HealthCheck':
+        icon = <HealthAndSafety />
+        let color: 'error' | 'info' | 'success' | 'warning'
+        switch (entry.healthCheckRating) {
+          case HealthCheckRating.Healthy:
+            color = 'success'
+            break
+          case HealthCheckRating.LowRisk:
+            color = 'info'
+            break
+          case HealthCheckRating.HighRisk:
+            color = 'warning'
+            break
+          case HealthCheckRating.CriticalRisk:
+            color = 'error'
+            break
+        }
+        healthRate = (
+          <CardContent>
+            <Favorite color={color} />
+          </CardContent>
+        )
+        break
+      default:
+        return assertNever(entry)
+    }
+
+    return (
+      <Card>
+        <CardContent>
+          {entry.date} {icon} {employerName}
+        </CardContent>
+        <CardContent>
+          <i>{entry.description}</i>
+        </CardContent>
+        {healthRate}
+        <CardContent>diagnose by {entry.specialist}</CardContent>
+        <ul>
+          {entry.diagnosisCodes?.map((code) => (
+            <li key={code}>
+              {code} {diagnoses.find((d) => d.code === code)?.name}
+            </li>
+          ))}
+        </ul>
+      </Card>
+    )
+  }
+
   return (
     <div>
       <h2>
@@ -45,16 +107,7 @@ const PatientPage = ({ diagnoses }: Props) => {
       <div>occupation: {patient.occupation}</div>
       <h3>entries</h3>
       {patient.entries.map((entry) => (
-        <div key={entry.id}>
-          {entry.date} <i>{entry.description}</i>
-          <ul>
-            {entry.diagnosisCodes?.map((code) => (
-              <li key={code}>
-                {code} {diagnoses.find((d) => d.code === code)?.name}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <EntryDetails key={entry.id} entry={entry} />
       ))}
     </div>
   )
