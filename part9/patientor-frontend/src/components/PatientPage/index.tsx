@@ -106,7 +106,7 @@ const PatientPage = ({ diagnoses }: Props) => {
       </h2>
       <div>ssn: {patient.ssn}</div>
       <div>occupation: {patient.occupation}</div>
-      <EntryForm patient={patient} setPatient={setPatient} />
+      <EntryForm patient={patient} setPatient={setPatient} diagnoses={diagnoses} />
       <h3>entries</h3>
       {patient.entries.map((entry) => (
         <EntryDetails key={entry.id} entry={entry} />
