@@ -4,13 +4,15 @@ import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom'
 import { Button, Divider, Container, Typography } from '@mui/material'
 
 import { apiBaseUrl } from './constants'
-import { Patient } from './types'
+import { Diagnosis, Patient } from './types'
 
+import diagnosisService from './services/diagnosis'
 import patientService from './services/patients'
 import PatientListPage from './components/PatientListPage'
 import PatientPage from './components/PatientPage'
 
 const App = () => {
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([])
   const [patients, setPatients] = useState<Patient[]>([])
 
   useEffect(() => {
@@ -21,6 +23,12 @@ const App = () => {
       setPatients(patients)
     }
     void fetchPatientList()
+
+    const fetchDiagnosesList = async () => {
+      const diagnoses = await diagnosisService.getAll()
+      setDiagnoses(diagnoses)
+    }
+    void fetchDiagnosesList()
   }, [])
 
   return (
@@ -36,7 +44,7 @@ const App = () => {
           <Divider hidden />
           <Routes>
             <Route path='/' element={<PatientListPage patients={patients} setPatients={setPatients} />} />
-            <Route path='/patients/:id' element={<PatientPage />} />
+            <Route path='/patients/:id' element={<PatientPage diagnoses={diagnoses} />} />
           </Routes>
         </Container>
       </Router>
