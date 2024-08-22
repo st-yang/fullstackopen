@@ -1,6 +1,6 @@
 const oneHour = 1000 * 60 * 60;
 
-const createDateColumns = date => ({
+const createDateColumns = (date) => ({
   created_at: date,
   updated_at: date,
 });
@@ -11,7 +11,7 @@ const createColumns = (ownerName, repositoryName) => ({
   name: repositoryName,
 });
 
-exports.seed = async knex => {
+exports.seed = async (knex) => {
   await knex('repositories').del();
 
   await knex('repositories').insert([
@@ -23,10 +23,10 @@ exports.seed = async knex => {
       ...createColumns('async-library', 'react-async'),
       ...createDateColumns(new Date(Date.now() - 2 * oneHour)),
     },
-    {
-      ...createColumns('rzwitserloot', 'lombok'),
-      ...createDateColumns(new Date(Date.now() - 3 * oneHour)),
-    },
+    // {
+    //   ...createColumns('rzwitserloot', 'lombok'),
+    //   ...createDateColumns(new Date(Date.now() - 3 * oneHour)),
+    // },
     {
       ...createColumns('rails', 'rails'),
       ...createDateColumns(new Date(Date.now() - 4 * oneHour)),
@@ -47,13 +47,13 @@ exports.seed = async knex => {
       ...createColumns('spring-projects', 'spring-framework'),
       ...createDateColumns(new Date(Date.now() - 8 * oneHour)),
     },
-    {
-      ...createColumns('zeit', 'next.js'),
-      ...createDateColumns(new Date(Date.now() - 9 * oneHour)),
-    },
-    {
-      ...createColumns('zeit', 'swr'),
-      ...createDateColumns(new Date(Date.now() - 10 * oneHour)),
-    },
+    // {
+    //   ...createColumns('zeit', 'next.js'),
+    //   ...createDateColumns(new Date(Date.now() - 9 * oneHour)),
+    // },
+    // {
+    //   ...createColumns('zeit', 'swr'),
+    //   ...createDateColumns(new Date(Date.now() - 10 * oneHour)),
+    // },
   ]);
 };
