@@ -4,6 +4,7 @@ import Text from '../Text'
 import theme from '../../theme'
 import StatsItem from './StatsItem'
 import Button from '../Button'
+import { horizontalSeparator, VerticalSeparator } from '../Separators'
 
 const styles = StyleSheet.create({
   container: {
@@ -29,16 +30,7 @@ const styles = StyleSheet.create({
   languageText: {
     color: theme.colors.white,
   },
-  verticalSeparator: {
-    width: 16,
-  },
-  horizontalSeparator: {
-    height: 16,
-  },
 })
-
-const VerticalSeparator = () => <View style={styles.verticalSeparator} />
-const horizontalSeparator = () => <View style={styles.horizontalSeparator} />
 
 const RepositoryItem = ({ repository, showDetail = false }) => {
   return (
