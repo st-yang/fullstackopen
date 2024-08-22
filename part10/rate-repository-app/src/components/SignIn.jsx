@@ -49,7 +49,7 @@ export const SignInContainer = ({ initialValues, validationSchema, onSubmit }) =
                 {errors.password}
               </Text>
             )}
-            <Button text='Sign In' onPress={handleSubmit} />
+            <Button title='Sign In' onPress={handleSubmit} />
           </View>
         )
       }}

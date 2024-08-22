@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
   },
 })
 
-const Button = ({ text, onPress }) => {
+const Button = ({ title, onPress }) => {
   return (
     <Pressable style={styles.button} onPress={onPress}>
       <Text style={styles.buttonText} fontSize='fontSizeSubheading' fontWeight='bold'>
-        {text}
+        {title}
       </Text>
     </Pressable>
   )
