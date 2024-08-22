@@ -4,7 +4,7 @@ import Button from './Button'
 import TextInput from './TextInput'
 
 const styles = StyleSheet.create({
-  signInForm: {
+  container: {
     gap: 20,
     padding: 20,
   },
@@ -26,7 +26,7 @@ const SignIn = () => {
   })
 
   return (
-    <View style={styles.signInForm}>
+    <View style={styles.container}>
       <TextInput placeholder='Username' value={formik.values.username} onChange={formik.handleChange('username')} />
       <TextInput
         secureTextEntry

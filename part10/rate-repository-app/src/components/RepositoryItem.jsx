@@ -11,22 +11,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   logo: {
+    borderRadius: 5,
     width: 50,
     height: 50,
   },
   info: {
     paddingLeft: 16,
     paddingBottom: 16,
-    gap: 2,
+    gap: 5,
   },
   language: {
     padding: 5,
     borderRadius: 5,
-    color: theme.colors.white,
     backgroundColor: theme.colors.primary,
+  },
+  languageText: {
+    color: theme.colors.white,
   },
   stats: {
     flexGrow: 1,
+    justifyContent: 'center',
     alignItems: 'center',
   },
 })
@@ -54,7 +58,6 @@ const StatsItem = ({ text, number }) => {
   return (
     <View style={styles.stats}>
       <Text fontWeight={'bold'}>{formatNumber(number)}</Text>
-      {/* <Text fontWeight={'bold'}>{number}</Text> */}
       <Text color={'textSecondary'}>{text}</Text>
     </View>
   )
@@ -74,8 +77,10 @@ const RepositoryItem = ({ repository }) => {
           <Text fontSize={'subheading'} color='textSecondary'>
             {repository.description}
           </Text>
-          <View style={styles.row}>
-            <Text style={styles.language}>{repository.language}</Text>
+          <View style={[styles.row]}>
+            <View style={styles.language}>
+              <Text style={styles.languageText}>{repository.language}</Text>
+            </View>
           </View>
         </View>
       </View>
