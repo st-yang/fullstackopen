@@ -8,6 +8,17 @@ export const SIGN_IN = gql`
   }
 `
 
+export const SIGN_UP = gql`
+  mutation signUp($username: String!, $password: String!) {
+    createUser(user: { username: $username, password: $password }) {
+      id
+      username
+      reviewCount
+      createdAt
+    }
+  }
+`
+
 export const CREATE_REVIEW = gql`
   mutation createReview($ownerName: String!, $repositoryName: String!, $rating: Int!, $text: String) {
     createReview(review: { ownerName: $ownerName, repositoryName: $repositoryName, rating: $rating, text: $text }) {

@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-native'
 import RepositoryList from './RepositoryList'
 import AppBar from './AppBar'
 import theme from '../theme'
+import SignUp from './SignUp'
 import SignIn from './SignIn'
 import SignOut from './SignOut'
 import RepositoryView from './RepositoryList/RepositoryView'
@@ -23,6 +24,7 @@ const Main = () => {
       <AppBar />
       <Routes>
         <Route path='/' element={<RepositoryList />} />
+        <Route path='/signup' element={<SignUp />} />
         <Route path='/signin' element={<SignIn />} />
         <Route path='/signout' element={<SignOut />} />
         <Route path='/repositories/:id' element={<RepositoryView />} />
