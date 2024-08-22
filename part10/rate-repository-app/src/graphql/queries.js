@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import { REPOSITORY_ABSTRACT } from './fragments'
 
 export const GET_REPOSITORIES = gql`
   query {
@@ -6,19 +7,22 @@ export const GET_REPOSITORIES = gql`
       totalCount
       edges {
         node {
-          id
-          fullName
-          description
-          language
-          forksCount
-          stargazersCount
-          ratingAverage
-          reviewCount
-          ownerAvatarUrl
+          ...RepositoryAbstract
         }
       }
     }
   }
+  ${REPOSITORY_ABSTRACT}
+`
+
+export const GET_REPOSITORY = gql`
+  query Repository($id: ID!) {
+    repository(id: $id) {
+      ...RepositoryAbstract
+      url
+    }
+  }
+  ${REPOSITORY_ABSTRACT}
 `
 
 export const ME = gql`
