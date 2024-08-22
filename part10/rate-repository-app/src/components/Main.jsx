@@ -5,6 +5,7 @@ import RepositoryList from './RepositoryList'
 import AppBar from './AppBar'
 import theme from '../theme'
 import SignIn from './SignIn'
+import SignOut from './SignOut'
 
 const styles = StyleSheet.create({
   container: {
@@ -21,6 +22,7 @@ const Main = () => {
       <Routes>
         <Route path='/' element={<RepositoryList />} />
         <Route path='/signin' element={<SignIn />} />
+        <Route path='/signout' element={<SignOut />} />
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
     </View>
