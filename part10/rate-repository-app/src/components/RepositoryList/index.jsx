@@ -5,7 +5,7 @@ import { useDebounce } from 'use-debounce'
 
 import RepositoryItem from './RepositoryItem'
 import useRepositories from '../../hooks/useRepositories'
-import { ItemSeparator } from '../Separators'
+import { ItemSeparator } from '../Common/Separators'
 import SortBar from './SortBar'
 import SearchBar from './SearchBar'
 

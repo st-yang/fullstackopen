@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 
-import Text from '../Text'
+import Text from '../Common/Text'
 
 const styles = StyleSheet.create({
   stats: {

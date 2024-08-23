@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-native'
 import { useApolloClient } from '@apollo/client'
 
-import useAuthStorage from '../hooks/useAuthStorage'
+import useAuthStorage from '../../hooks/useAuthStorage'
 
 const SignOut = () => {
   const authStorage = useAuthStorage()

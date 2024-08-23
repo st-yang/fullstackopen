@@ -3,8 +3,8 @@ import { useParams } from 'react-router-native'
 
 import useRepository from '../../hooks/useRepository'
 import RepositoryItem from './RepositoryItem'
-import ReviewItem from '../ReviewItem'
-import { ItemSeparator } from '../Separators'
+import ReviewItem from '../Review/ReviewItem'
+import { ItemSeparator } from '../Common/Separators'
 
 const RepositoryView = () => {
   const { id } = useParams()

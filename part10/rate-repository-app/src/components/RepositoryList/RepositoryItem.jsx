@@ -1,10 +1,10 @@
 import { Image, Linking, StyleSheet, View } from 'react-native'
 
-import Text from '../Text'
+import Text from '../Common/Text'
 import theme from '../../theme'
 import StatsItem from './StatsItem'
-import Button from '../Button'
-import { horizontalSeparator, VerticalSeparator } from '../Separators'
+import Button from '../Common/Button'
+import { horizontalSeparator, VerticalSeparator } from '../Common/Separators'
 
 const styles = StyleSheet.create({
   container: {

@@ -1,9 +1,9 @@
 import { StyleSheet, View } from 'react-native'
 import { format } from 'date-fns'
 
-import theme from '../theme'
-import Text from './Text'
-import { VerticalSeparator } from './Separators'
+import theme from '../../theme'
+import Text from '../Common/Text'
+import { VerticalSeparator } from '../Common/Separators'
 
 const styles = StyleSheet.create({
   container: {

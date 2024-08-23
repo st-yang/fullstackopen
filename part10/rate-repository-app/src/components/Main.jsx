@@ -4,12 +4,12 @@ import { Navigate, Route, Routes } from 'react-router-native'
 import RepositoryList from './RepositoryList'
 import AppBar from './AppBar'
 import theme from '../theme'
-import SignUp from './SignUp'
-import SignIn from './SignIn'
-import SignOut from './SignOut'
+import SignUp from './Auth/SignUp'
+import SignIn from './Auth/SignIn'
+import SignOut from './Auth/SignOut'
 import RepositoryView from './RepositoryList/RepositoryView'
-import CreateReview from './CreateReview'
-import MyReviews from './MyReviews'
+import CreateReview from './Review/CreateReview'
+import MyReviews from './Review/MyReviews'
 
 const styles = StyleSheet.create({
   container: {
