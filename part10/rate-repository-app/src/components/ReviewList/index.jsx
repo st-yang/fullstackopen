@@ -1,7 +1,6 @@
-import { useQuery } from '@apollo/client'
 import { FlatList } from 'react-native'
 
-import { GET_CURRENT_USER } from '../../graphql/queries'
+import useReviews from '../../hooks/useReviews'
 import { ItemSeparator } from '../Common/Separators'
 import ReviewItem from './ReviewItem'
 
@@ -17,11 +16,7 @@ const ReviewListContainer = ({ reviews }) => {
 }
 
 const ReviewList = () => {
-  const { data } = useQuery(GET_CURRENT_USER, {
-    variables: { includeReviews: true },
-  })
-  const user = data && data.me
-  const reviews = user && user.reviews ? user.reviews.edges.map((edge) => edge.node) : []
+  const { reviews } = useReviews()
 
   return <ReviewListContainer reviews={reviews} />
 }
