@@ -47,6 +47,7 @@ export const GET_CURRENT_USER = gql`
           node {
             ...ReviewAbstract
             repository {
+              id
               fullName
               name
               ownerName

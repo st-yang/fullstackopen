@@ -5,6 +5,7 @@ import Text from './Text'
 
 const styles = StyleSheet.create({
   button: {
+    flex: 1,
     height: 50,
     padding: 10,
     borderRadius: 5,
@@ -16,11 +17,16 @@ const styles = StyleSheet.create({
   buttonText: {
     color: theme.colors.white,
   },
+  colorError: {
+    backgroundColor: theme.colors.error,
+  },
 })
 
-const Button = ({ title, onPress }) => {
+const Button = ({ title, onPress, color, style, ...props }) => {
+  const buttonStyle = [styles.button, color === 'error' && styles.colorError, style]
+
   return (
-    <Pressable style={styles.button} onPress={onPress}>
+    <Pressable style={buttonStyle} onPress={onPress} {...props}>
       <Text style={styles.buttonText} fontSize='fontSizeSubheading' fontWeight='bold'>
         {title}
       </Text>

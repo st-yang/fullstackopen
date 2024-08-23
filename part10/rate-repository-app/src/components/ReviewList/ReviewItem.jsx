@@ -1,8 +1,11 @@
 import { format } from 'date-fns'
-import { StyleSheet, View } from 'react-native'
+import { Alert, StyleSheet, View } from 'react-native'
+import { useNavigate } from 'react-router-native'
 
+import useDeleteReview from '../../hooks/useDeleteReview'
 import theme from '../../theme'
-import { VerticalSeparator } from '../Common/Separators'
+import Button from '../Common/Button'
+import { HorizontalSeparator, VerticalSeparator } from '../Common/Separators'
 import Text from '../Common/Text'
 
 const styles = StyleSheet.create({
@@ -26,6 +29,38 @@ const styles = StyleSheet.create({
     gap: 5,
   },
 })
+
+const ReviewItemActions = ({ review }) => {
+  const [deleteReview] = useDeleteReview()
+  const navigate = useNavigate()
+
+  const handleDeleteReview = async () => {
+    try {
+      await deleteReview(review.id)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  return (
+    <View>
+      {HorizontalSeparator()}
+      <View style={[styles.row, { gap: 20 }]}>
+        <Button title='View repository' onPress={() => navigate(`/repositories/${review.repository.id}`)} />
+        <Button
+          color='error'
+          title='Delete review'
+          onPress={() => {
+            Alert.alert('Delete review', 'Are you sure you want to delete this review?', [
+              { text: 'Cancel', style: 'cancel' },
+              { text: 'Delete', style: 'destructive', onPress: handleDeleteReview },
+            ])
+          }}
+        />
+      </View>
+    </View>
+  )
+}
 
 const ReviewItem = ({ review }) => {
   return (
@@ -54,6 +89,7 @@ const ReviewItem = ({ review }) => {
           <Text>{review.text}</Text>
         </View>
       </View>
+      {review.repository && <ReviewItemActions review={review} />}
     </View>
   )
 }
