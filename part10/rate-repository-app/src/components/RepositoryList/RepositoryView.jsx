@@ -8,7 +8,11 @@ import RepositoryItem from './RepositoryItem'
 
 const RepositoryView = () => {
   const { id } = useParams()
-  const { repository } = useRepository(id)
+  const { repository, fetchMore } = useRepository({ id })
+
+  const onEndReach = () => {
+    fetchMore()
+  }
 
   const reviews = repository && repository.reviews ? repository.reviews.edges.map((edge) => edge.node) : []
 
@@ -24,6 +28,8 @@ const RepositoryView = () => {
           {ItemSeparator()}
         </View>
       )}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   ) : (
     <></>
