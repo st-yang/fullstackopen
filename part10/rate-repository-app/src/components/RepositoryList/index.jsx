@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { Link } from 'react-router-native'
+import { useDebounce } from 'use-debounce'
 
 import RepositoryItem from './RepositoryItem'
 import useRepositories from '../../hooks/useRepositories'
@@ -52,7 +53,8 @@ const RepositoryList = () => {
   const [orderBy, setOrderBy] = useState('CREATED_AT')
   const [orderDirection, setOrderDirection] = useState('DESC')
   const [searchKeyword, setSearchKeyword] = useState('')
-  const { repositories } = useRepositories({ orderBy, orderDirection, searchKeyword })
+  const [searchDebounce] = useDebounce(searchKeyword, 500)
+  const { repositories } = useRepositories({ orderBy, orderDirection, searchKeyword: searchDebounce })
 
   return (
     <RepositoryListContainer
