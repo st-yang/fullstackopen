@@ -31,7 +31,7 @@ export class RepositoryListContainer extends React.Component {
   }
 
   render() {
-    const { repositories } = this.props
+    const { repositories, onEndReach } = this.props
     const repositoryNodes = repositories ? repositories.edges.map((edge) => edge.node) : []
     return (
       <FlatList
@@ -44,6 +44,8 @@ export class RepositoryListContainer extends React.Component {
         )}
         keyExtractor={({ id }) => id}
         ListHeaderComponent={this.renderHeader}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
     )
   }
@@ -54,11 +56,20 @@ const RepositoryList = () => {
   const [orderDirection, setOrderDirection] = useState('DESC')
   const [searchKeyword, setSearchKeyword] = useState('')
   const [searchDebounce] = useDebounce(searchKeyword, 500)
-  const { repositories } = useRepositories({ orderBy, orderDirection, searchKeyword: searchDebounce })
+  const { repositories, fetchMore } = useRepositories({
+    orderBy,
+    orderDirection,
+    searchKeyword: searchDebounce,
+  })
+
+  const onEndReach = () => {
+    fetchMore()
+  }
 
   return (
     <RepositoryListContainer
       repositories={repositories}
+      onEndReach={onEndReach}
       orderBy={orderBy}
       setOrderBy={setOrderBy}
       orderDirection={orderDirection}
