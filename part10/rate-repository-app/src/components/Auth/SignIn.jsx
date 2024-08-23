@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     gap: 20,
     padding: 20,
   },
+  row: {
+    flexDirection: 'row',
+  },
 })
 
 export const SignInContainer = ({ initialValues, validationSchema, onSubmit }) => {
@@ -49,7 +52,9 @@ export const SignInContainer = ({ initialValues, validationSchema, onSubmit }) =
                 {errors.password}
               </Text>
             )}
-            <Button title='Sign In' onPress={handleSubmit} />
+            <View style={styles.row}>
+              <Button title='Sign In' onPress={handleSubmit} />
+            </View>
           </View>
         )
       }}
