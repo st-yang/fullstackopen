@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { Link } from 'react-router-native'
 
@@ -6,40 +6,53 @@ import RepositoryItem from './RepositoryItem'
 import useRepositories from '../../hooks/useRepositories'
 import { ItemSeparator } from '../Separators'
 import SortBar from './SortBar'
+import SearchBar from './SearchBar'
 
-export const RepositoryListContainer = ({ repositories, orderBy, setOrderBy, orderDirection, setOrderDirection }) => {
-  const repositoryNodes = repositories ? repositories.edges.map((edge) => edge.node) : []
+export class RepositoryListContainer extends React.Component {
+  renderHeader = () => {
+    const { orderBy, setOrderBy, orderDirection, setOrderDirection, searchKeyword, setSearchKeyword } = this.props
 
-  const sortValue = `${orderBy}:${orderDirection}`
-  const sortOnChange = (value) => {
-    const values = value.split(':')
-    setOrderBy(values[0])
-    setOrderDirection(values[1])
+    const sortValue = `${orderBy}:${orderDirection}`
+    const sortOnChange = (value) => {
+      const values = value.split(':')
+      setOrderBy(values[0])
+      setOrderDirection(values[1])
+    }
+
+    const searchOnChange = (value) => setSearchKeyword(value)
+
+    return (
+      <View>
+        <SearchBar value={searchKeyword} onChange={searchOnChange} />
+        <SortBar value={sortValue} onChange={sortOnChange} />
+      </View>
+    )
   }
 
-  return (
-    <FlatList
-      data={repositoryNodes}
-      ItemSeparatorComponent={ItemSeparator}
-      renderItem={({ item }) => (
-        <Link to={`/repositories/${item.id}`}>
-          <RepositoryItem repository={item} />
-        </Link>
-      )}
-      keyExtractor={({ id }) => id}
-      ListHeaderComponent={() => (
-        <View>
-          <SortBar value={sortValue} onChange={sortOnChange} />
-        </View>
-      )}
-    />
-  )
+  render() {
+    const { repositories } = this.props
+    const repositoryNodes = repositories ? repositories.edges.map((edge) => edge.node) : []
+    return (
+      <FlatList
+        data={repositoryNodes}
+        ItemSeparatorComponent={ItemSeparator}
+        renderItem={({ item }) => (
+          <Link to={`/repositories/${item.id}`}>
+            <RepositoryItem repository={item} />
+          </Link>
+        )}
+        keyExtractor={({ id }) => id}
+        ListHeaderComponent={this.renderHeader}
+      />
+    )
+  }
 }
 
 const RepositoryList = () => {
   const [orderBy, setOrderBy] = useState('CREATED_AT')
   const [orderDirection, setOrderDirection] = useState('DESC')
-  const { repositories } = useRepositories({ orderBy, orderDirection })
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const { repositories } = useRepositories({ orderBy, orderDirection, searchKeyword })
 
   return (
     <RepositoryListContainer
@@ -48,6 +61,8 @@ const RepositoryList = () => {
       setOrderBy={setOrderBy}
       orderDirection={orderDirection}
       setOrderDirection={setOrderDirection}
+      searchKeyword={searchKeyword}
+      setSearchKeyword={setSearchKeyword}
     />
   )
 }
