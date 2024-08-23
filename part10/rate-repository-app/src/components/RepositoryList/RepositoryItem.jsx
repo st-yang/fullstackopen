@@ -1,10 +1,10 @@
 import { Image, Linking, StyleSheet, View } from 'react-native'
 
-import Text from '../Common/Text'
 import theme from '../../theme'
-import StatsItem from './StatsItem'
 import Button from '../Common/Button'
-import { horizontalSeparator, VerticalSeparator } from '../Common/Separators'
+import { HorizontalSeparator, VerticalSeparator } from '../Common/Separators'
+import Text from '../Common/Text'
+import StatsItem from './StatsItem'
 
 const styles = StyleSheet.create({
   container: {
@@ -54,7 +54,7 @@ const RepositoryItem = ({ repository, showDetail = false }) => {
           </View>
         </View>
       </View>
-      {horizontalSeparator()}
+      {HorizontalSeparator()}
       <View style={styles.row}>
         <StatsItem text={'Stars'} number={repository.stargazersCount} />
         <StatsItem text={'Forks'} number={repository.forksCount} />
@@ -63,7 +63,7 @@ const RepositoryItem = ({ repository, showDetail = false }) => {
       </View>
       {showDetail && (
         <View>
-          {horizontalSeparator()}
+          {HorizontalSeparator()}
           <Button title='Open in GitHub' onPress={() => Linking.openURL(repository.url)} />
         </View>
       )}

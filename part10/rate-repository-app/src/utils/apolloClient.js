@@ -1,6 +1,6 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client'
-import Constants from 'expo-constants'
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import Constants from 'expo-constants'
 
 const { apolloUri } = Constants.expoConfig.extra
 

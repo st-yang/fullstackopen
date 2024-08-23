@@ -3,11 +3,11 @@ import { FlatList, View } from 'react-native'
 import { Link } from 'react-router-native'
 import { useDebounce } from 'use-debounce'
 
-import RepositoryItem from './RepositoryItem'
 import useRepositories from '../../hooks/useRepositories'
 import { ItemSeparator } from '../Common/Separators'
-import SortBar from './SortBar'
+import RepositoryItem from './RepositoryItem'
 import SearchBar from './SearchBar'
+import SortBar from './SortBar'
 
 export class RepositoryListContainer extends React.Component {
   renderHeader = () => {

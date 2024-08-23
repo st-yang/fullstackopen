@@ -1,9 +1,9 @@
-import { FlatList } from 'react-native'
 import { useQuery } from '@apollo/client'
+import { FlatList } from 'react-native'
 
 import { GET_CURRENT_USER } from '../../graphql/queries'
-import ReviewItem from './ReviewItem'
 import { ItemSeparator } from '../Common/Separators'
+import ReviewItem from './ReviewItem'
 
 const MyReviews = () => {
   const { data } = useQuery(GET_CURRENT_USER, {

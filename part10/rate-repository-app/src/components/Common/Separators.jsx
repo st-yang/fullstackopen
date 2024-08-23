@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   verticalSeparator: {
     width: 16,
   },
-  horizontalSeparator: {
+  HorizontalSeparator: {
     height: 16,
   },
 })
@@ -16,4 +16,4 @@ export const ItemSeparator = () => <View style={styles.separator} />
 
 export const VerticalSeparator = () => <View style={styles.verticalSeparator} />
 
-export const horizontalSeparator = () => <View style={styles.horizontalSeparator} />
+export const HorizontalSeparator = () => <View style={styles.HorizontalSeparator} />

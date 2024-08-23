@@ -2,9 +2,9 @@ import { FlatList, View } from 'react-native'
 import { useParams } from 'react-router-native'
 
 import useRepository from '../../hooks/useRepository'
-import RepositoryItem from './RepositoryItem'
-import ReviewItem from '../Review/ReviewItem'
 import { ItemSeparator } from '../Common/Separators'
+import ReviewItem from '../Review/ReviewItem'
+import RepositoryItem from './RepositoryItem'
 
 const RepositoryView = () => {
   const { id } = useParams()

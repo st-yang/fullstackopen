@@ -1,6 +1,6 @@
+import { useApolloClient } from '@apollo/client'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-native'
-import { useApolloClient } from '@apollo/client'
 
 import useAuthStorage from '../../hooks/useAuthStorage'
 
