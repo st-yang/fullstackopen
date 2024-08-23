@@ -5,13 +5,7 @@ import { GET_CURRENT_USER } from '../../graphql/queries'
 import { ItemSeparator } from '../Common/Separators'
 import ReviewItem from './ReviewItem'
 
-const MyReviews = () => {
-  const { data } = useQuery(GET_CURRENT_USER, {
-    variables: { includeReviews: true },
-  })
-  const user = data && data.me
-  const reviews = user && user.reviews ? user.reviews.edges.map((edge) => edge.node) : []
-
+const ReviewListContainer = ({ reviews }) => {
   return (
     <FlatList
       data={reviews}
@@ -22,4 +16,14 @@ const MyReviews = () => {
   )
 }
 
-export default MyReviews
+const ReviewList = () => {
+  const { data } = useQuery(GET_CURRENT_USER, {
+    variables: { includeReviews: true },
+  })
+  const user = data && data.me
+  const reviews = user && user.reviews ? user.reviews.edges.map((edge) => edge.node) : []
+
+  return <ReviewListContainer reviews={reviews} />
+}
+
+export default ReviewList

@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     gap: 20,
     padding: 20,
   },
+  row: {
+    flexDirection: 'row',
+  },
 })
 
 export const CreateReviewContainer = ({ initialValues, validationSchema, onSubmit }) => {
@@ -69,7 +72,9 @@ export const CreateReviewContainer = ({ initialValues, validationSchema, onSubmi
               onChangeText={handleChange('text')}
               onBlur={handleBlur('text')}
             />
-            <Button title='Create a review' onPress={handleSubmit} />
+            <View style={styles.row}>
+              <Button title='Create a review' onPress={handleSubmit} />
+            </View>
           </View>
         )
       }}
