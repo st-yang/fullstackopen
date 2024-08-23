@@ -1,9 +1,9 @@
 import { StyleSheet, View } from 'react-native'
 import { format } from 'date-fns'
 
-import theme from '../../theme'
-import Text from '../Text'
-import { VerticalSeparator } from '../Separators'
+import theme from '../theme'
+import Text from './Text'
+import { VerticalSeparator } from './Separators'
 
 const styles = StyleSheet.create({
   container: {
@@ -38,9 +38,16 @@ const ReviewItem = ({ review }) => {
         </View>
         {VerticalSeparator()}
         <View style={styles.info}>
-          <Text fontSize={'subheading'} fontWeight={'bold'}>
-            {review.user.username}
-          </Text>
+          {review.user && (
+            <Text fontSize={'subheading'} fontWeight={'bold'}>
+              {review.user.username}
+            </Text>
+          )}
+          {review.repository && (
+            <Text fontSize={'subheading'} fontWeight={'bold'}>
+              {review.repository.fullName}
+            </Text>
+          )}
           <Text fontSize={'subheading'} color='textSecondary'>
             {format(review.createdAt, 'dd.MM.yyyy')}
           </Text>

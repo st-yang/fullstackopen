@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client'
 
 import AppBarTab from './AppBarTab'
 import theme from '../../theme'
-import { ME } from '../../graphql/queries'
+import { GET_CURRENT_USER } from '../../graphql/queries'
 
 const styles = StyleSheet.create({
   container: {
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 })
 
 const AppBar = () => {
-  const { data } = useQuery(ME)
+  const { data } = useQuery(GET_CURRENT_USER)
   const user = data && data.me
 
   return (
@@ -26,6 +26,7 @@ const AppBar = () => {
         {!user && <AppBarTab text={'Sign in'} url={'/signin'} />}
         {!user && <AppBarTab text={'Sign up'} url={'/signup'} />}
         {user && <AppBarTab text={'Create a review'} url={'/createReview'} />}
+        {user && <AppBarTab text={'My reviews'} url={'/myReviews'} />}
         {user && <AppBarTab text={'Sign out'} url={'/signout'} />}
       </ScrollView>
     </View>

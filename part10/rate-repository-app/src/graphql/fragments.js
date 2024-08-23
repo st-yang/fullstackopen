@@ -13,3 +13,12 @@ export const REPOSITORY_ABSTRACT = gql`
     ownerAvatarUrl
   }
 `
+
+export const REVIEW_ABSTRACT = gql`
+  fragment ReviewAbstract on Review {
+    id
+    text
+    rating
+    createdAt
+  }
+`
