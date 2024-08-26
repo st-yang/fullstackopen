@@ -1,0 +1,4 @@
+docker start -i vibrant_ptolemy
+root@5befefbd6ef4:/# nano /usr/src/app/index.js
+root@5befefbd6ef4:/# cat /usr/src/app/index.js
+console.log('Hello World')
