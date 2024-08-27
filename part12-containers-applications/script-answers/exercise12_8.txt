@@ -1,0 +1,64 @@
+(base) ➜  todo-backend git:(main) ✗ docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS              PORTS                     NAMES
+b35df26f9308   mongo     "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:3456->27017/tcp   todo-backend-mongo-1
+(base) ➜  todo-backend git:(main) ✗ docker exec -ti todo-backend-mongo-1 bash
+root@b35df26f9308:/# mongosh -u root -p example
+Current Mongosh Log ID: 66cd76b4c60269c5995e739b
+Connecting to:          mongodb://<credentials>@127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.0
+Using MongoDB:          7.0.14
+Using Mongosh:          2.3.0
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+To help improve our products, anonymous usage data is collected and sent to MongoDB periodically (https://www.mongodb.com/legal/privacy-policy).
+You can opt-out by running the disableTelemetry() command.
+------
+The server generated these startup warnings when booting
+2024-08-27T06:46:04.880+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+2024-08-27T06:46:05.553+00:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never' in this binary version
+2024-08-27T06:46:05.553+00:00: vm.max_map_count is too low
+------
+test> show dbs
+admin         100.00 KiB
+config         12.00 KiB
+local          72.00 KiB
+the_database   40.00 KiB
+test> use the_database
+switched to db the_database
+the_database> show collections
+todos
+the_database> db.todos.find({})
+[
+    {
+        _id: ObjectId('66cd762bcc989137f35e739c'),
+        text: 'Write code',
+        done: true
+    },
+    {
+        _id: ObjectId('66cd762bcc989137f35e739d'),
+        text: 'Learn about containers',
+        done: false
+    }
+]
+the_database> db.todos.insertOne({ text: 'Increase the number of tools in my tool belt', done: false })
+{
+    acknowledged: true,
+    insertedId: ObjectId('66cd7706c60269c5995e739c')
+}
+the_database> db.todos.find({})
+[
+    {
+        _id: ObjectId('66cd762bcc989137f35e739c'),
+        text: 'Write code',
+        done: true
+    },
+    {
+        _id: ObjectId('66cd762bcc989137f35e739d'),
+        text: 'Learn about containers',
+        done: false
+    },
+    {
+        _id: ObjectId('66cd7706c60269c5995e739c'),
+        text: 'Increase the number of tools in my tool belt',
+        done: false
+    }
+]
+the_database>
