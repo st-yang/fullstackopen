@@ -1,0 +1,23 @@
+services:
+  frontend:
+    image: patientor-frontend
+    build:
+      context: ./patientor-frontend
+      dockerfile: Dockerfile
+    container_name: patientor-frontend
+  backend:
+    image: patientor-backend
+    build:
+      context: ./patientor-backend
+      dockerfile: Dockerfile
+    container_name: patientor-backend
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy
+    depends_on:
+      - frontend
+      - backend
