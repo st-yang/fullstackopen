@@ -12,12 +12,12 @@ FROM node:20 AS build-stage
 
 WORKDIR /usr/src/app
 
-COPY --chown=node:node --from=test-stage /usr/src/app .
+COPY --from=test-stage /usr/src/app .
+
+ENV VITE_BACKEND_URL=http://localhost:8080/api/
 
 RUN npm run build
 
-RUN npm install -g serve
+FROM nginx:1.25-alpine
 
-USER node
-
-CMD ["serve", "dist"]
+COPY --from=build-stage /usr/src/app/dist /usr/share/nginx/html
