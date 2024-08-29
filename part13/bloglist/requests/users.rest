@@ -13,6 +13,9 @@ Content-Type: application/json
 ### GET user
 GET http://localhost:3001/api/users/3
 
+### GET user with read readings
+GET http://localhost:3001/api/users/3?read=true
+
 ### PUT user
 PUT http://localhost:3001/api/users/3
 Content-Type: application/json
