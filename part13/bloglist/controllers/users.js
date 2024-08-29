@@ -21,24 +21,31 @@ router.post('/', async (req, res) => {
   }
 })
 
-const userFinder = async (req, res, next) => {
-  req.user = await User.findByPk(req.params.id)
-  next()
-}
-
-router.get('/:id', userFinder, async (req, res) => {
-  if (req.user) {
-    res.json(req.user)
+router.get('/:id', async (req, res) => {
+  const user = await User.findByPk(req.params.id, {
+    attributes: ['name', 'username'],
+    include: {
+      model: Blog,
+      as: 'readings',
+      attributes: { exclude: ['createdAt', 'updatedAt', 'userId'] },
+      through: {
+        attributes: [],
+      },
+    },
+  })
+  if (user) {
+    res.json(user)
   } else {
     res.status(404).end()
   }
 })
 
-router.put('/:id', userFinder, async (req, res) => {
-  if (req.user) {
-    req.user.username = req.body.username
-    await req.user.save()
-    res.json(req.user)
+router.put('/:id', async (req, res) => {
+  const user = await User.findByPk(req.params.id)
+  if (user) {
+    user.username = req.body.username
+    await user.save()
+    res.json(user)
   } else {
     res.status(404).end()
   }
