@@ -12,5 +12,8 @@ Content-Type: application/json
   "likes": 0
 }
 
+### GET blog
+GET http://localhost:3001/api/blogs/3
+
 ### DELETE blog
 DELETE http://localhost:3001/api/blogs/3
