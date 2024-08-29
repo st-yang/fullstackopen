@@ -1,0 +1,22 @@
+### GET users
+GET http://localhost:3001/api/users
+
+### POST user
+POST http://localhost:3001/api/users/
+Content-Type: application/json
+
+{
+  "username": "test",
+  "name": "Test User"
+}
+
+### GET user
+GET http://localhost:3001/api/users/3
+
+### PUT user
+PUT http://localhost:3001/api/users/3
+Content-Type: application/json
+
+{
+  "username": "update username"
+}
