@@ -15,5 +15,13 @@ Content-Type: application/json
 ### GET blog
 GET http://localhost:3001/api/blogs/3
 
+### PUT blog
+PUT http://localhost:3001/api/blogs/3
+Content-Type: application/json
+
+{
+  "likes": 5
+}
+
 ### DELETE blog
 DELETE http://localhost:3001/api/blogs/3
