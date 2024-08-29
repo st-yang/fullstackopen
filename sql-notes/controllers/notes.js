@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const jwt = require('jsonwebtoken')
 
 const { SECRET } = require('../util/config')
 const { Note, User } = require('../models')
@@ -47,14 +48,14 @@ router.get('/:id', noteFinder, async (req, res) => {
   }
 })
 
-router.delete('/:id', noteFinder, async (req, res) => {
+router.delete('/:id', tokenExtractor, noteFinder, async (req, res) => {
   if (req.note) {
     await req.note.destroy()
   }
   res.status(204).end()
 })
 
-router.put('/:id', noteFinder, async (req, res) => {
+router.put('/:id', tokenExtractor, noteFinder, async (req, res) => {
   if (req.note) {
     req.note.important = req.body.important
     await req.note.save()

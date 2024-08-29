@@ -4,6 +4,7 @@ GET http://localhost:3001/api/notes
 ### POST note
 POST http://localhost:3001/api/notes/
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOjIsImlhdCI6MTcyNDkxNzk5Mn0.HVkJy041CKfHv4A4ha62dqMIinyFE4Q-jZyaXFPJvG8
 
 {
   "content": "Test",
@@ -14,8 +15,9 @@ Content-Type: application/json
 GET http://localhost:3001/api/notes/3
 
 ### PUT note
-PUT http://localhost:3001/api/notes/3
+PUT http://localhost:3001/api/notes/5
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOjIsImlhdCI6MTcyNDkxNzk5Mn0.HVkJy041CKfHv4A4ha62dqMIinyFE4Q-jZyaXFPJvG8
 
 {
   "content": "Test2",
@@ -24,3 +26,5 @@ Content-Type: application/json
 
 ### DELETE note
 DELETE http://localhost:3001/api/notes/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOjIsImlhdCI6MTcyNDkxNzk5Mn0.HVkJy041CKfHv4A4ha62dqMIinyFE4Q-jZyaXFPJvG8
