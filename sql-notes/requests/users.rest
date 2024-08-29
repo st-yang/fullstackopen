@@ -12,3 +12,12 @@ Content-Type: application/json
 
 ### GET user
 GET http://localhost:3001/api/users/3
+
+### disable user
+PUT http://localhost:3001/api/users/test
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjIsImlhdCI6MTcyNDkyODg0NH0.AVOEs2zGeH7YwjDmsqBlMSNVoyxjWvu7iFCDnzJi8w8
+
+{
+  "disabled": false
+}
