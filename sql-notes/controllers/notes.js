@@ -8,12 +8,8 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  try {
-    const note = await Note.create(req.body)
-    res.json(note)
-  } catch (error) {
-    return res.status(400).json({ error })
-  }
+  const note = await Note.create(req.body)
+  res.json(note)
 })
 
 const noteFinder = async (req, res, next) => {
