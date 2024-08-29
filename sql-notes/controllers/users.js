@@ -27,22 +27,37 @@ router.put('/:username', tokenExtractor, isAdmin, async (req, res) => {
   }
 })
 
+const getUserOptions = {
+  attributes: { exclude: [''] },
+  include: [
+    {
+      model: Note,
+      attributes: { exclude: ['userId'] },
+    },
+    {
+      model: Note,
+      as: 'markedNotes',
+      attributes: { exclude: ['userId'] },
+      through: {
+        attributes: [],
+      },
+      include: {
+        model: User,
+        attributes: ['name'],
+      },
+    },
+    {
+      model: Team,
+      attributes: ['name', 'id'],
+      through: {
+        attributes: [],
+      },
+    },
+  ],
+}
+
 router.get('/', async (req, res) => {
-  const users = await User.findAll({
-    include: [
-      {
-        model: Note,
-        attributes: { exclude: ['userId'] },
-      },
-      {
-        model: Team,
-        attributes: ['name', 'id'],
-        through: {
-          attributes: [],
-        },
-      },
-    ],
-  })
+  const users = await User.findAll(getUserOptions)
   res.json(users)
 })
 
@@ -56,7 +71,7 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-  const user = await User.findByPk(req.params.id)
+  const user = await User.findByPk(req.params.id, getUserOptions)
   if (user) {
     res.json(user)
   } else {
