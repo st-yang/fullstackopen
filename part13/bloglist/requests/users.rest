@@ -6,7 +6,7 @@ POST http://localhost:3001/api/users/
 Content-Type: application/json
 
 {
-  "username": "test",
+  "username": "test1@test.com",
   "name": "Test User"
 }
 
@@ -18,5 +18,5 @@ PUT http://localhost:3001/api/users/3
 Content-Type: application/json
 
 {
-  "username": "update username"
+  "username": "update@username.co"
 }

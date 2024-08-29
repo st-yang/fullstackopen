@@ -1,0 +1,17 @@
+### login as root
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "test1@test.com",
+    "password": "secret"
+}
+
+### login with invalid credentials
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "invalid",
+    "password": "invalid"
+}
