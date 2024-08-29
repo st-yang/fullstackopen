@@ -11,7 +11,10 @@ Content-Type: application/json
 }
 
 ### GET user
-GET http://localhost:3001/api/users/3
+GET http://localhost:3001/api/users/2
+
+### GET user with teams
+GET http://localhost:3001/api/users/2?teams=true
 
 ### disable user
 PUT http://localhost:3001/api/users/test
