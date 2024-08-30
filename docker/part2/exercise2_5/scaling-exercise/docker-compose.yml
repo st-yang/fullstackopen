@@ -9,10 +9,12 @@ services:
       image: devopsdockeruh/scaling-exercise-compute
       environment:
         - VIRTUAL_HOST=compute.localtest.me
+      deploy:
+        replicas: 10
   load-balancer:
       build: ./load-balancer
       image: load-balancer
-      volumes: 
+      volumes:
         - /var/run/docker.sock:/tmp/docker.sock:ro
       ports:
         - 80:80
