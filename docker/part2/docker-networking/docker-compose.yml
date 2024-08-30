@@ -3,6 +3,8 @@ services:
     image: jwilder/whoami
     environment:
       - VIRTUAL_HOST=whoami.colasloth.com
+    deploy:
+      replicas: 3
   hello:
     image: nginx:1.19-alpine
     volumes:
