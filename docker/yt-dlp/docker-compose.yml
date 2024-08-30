@@ -4,3 +4,6 @@ services:
   yt-dlp-ubuntu:
     image: eranikus424/youtube-dl
     build: .
+    volumes:
+      - .:/mydir
+    container_name: yt-dlp
