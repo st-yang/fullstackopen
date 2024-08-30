@@ -1,0 +1,13 @@
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS                     PORTS     NAMES
+064145ced267   postgres       "docker-entrypoint.s…"   6 minutes ago   Exited (1) 6 minutes ago             loving_kapitsa
+788c0863abf3   busybox        "sh"                     6 minutes ago   Exited (0) 6 minutes ago             fervent_dijkstra
+43ac365bb028   nginx:1.20.1   "/docker-entrypoint.…"   6 minutes ago   Up 6 minutes               80/tcp    cool_darwin
+
+REPOSITORY                              TAG                IMAGE ID       CREATED         SIZE
+mongo                                   latest             81a05b728352   3 days ago      782MB
+nginx                                   latest             5ef79149e0ec   2 weeks ago     188MB
+postgres                                latest             69092dbdec0d   3 weeks ago     432MB
+ubuntu                                  latest             edbfe74c41f8   4 weeks ago     78.1MB
+redis                                   latest             dae83f665c92   4 weeks ago     117MB
+busybox                                 latest             65ad0d468eb1   15 months ago   4.26MB
+nginx                                   1.20.1             c8d03f6b8b91   2 years ago     133MB

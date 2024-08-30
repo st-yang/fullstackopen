@@ -1,0 +1,4 @@
+docker run -d devopsdockeruh/simple-web-service:alpine
+docker exec d478 tail -f text.log
+
+Secret message is: 'You can find the source code here: https://github.com/docker-hy'

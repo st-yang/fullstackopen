@@ -1,0 +1,4 @@
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS                     PORTS     NAMES
+064145ced267   postgres       "docker-entrypoint.s…"   5 minutes ago   Exited (1) 5 minutes ago             loving_kapitsa
+788c0863abf3   busybox        "sh"                     5 minutes ago   Exited (0) 5 minutes ago             fervent_dijkstra
+43ac365bb028   nginx:1.20.1   "/docker-entrypoint.…"   5 minutes ago   Up 5 minutes               80/tcp    cool_darwin
