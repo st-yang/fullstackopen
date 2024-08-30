@@ -1,0 +1,2 @@
+Docker Hub link: https://hub.docker.com/r/eranikus424/pokedex
+README: https://github.com/st-yang/full-stack-open-pokedex/blob/main/README.md
