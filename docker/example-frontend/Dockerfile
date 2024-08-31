@@ -16,6 +16,15 @@ RUN npm install -g serve
 
 RUN useradd -m appuser
 RUN chown appuser .
+
+# Reduce the size of the image
+# RUN npm install && \
+#     npm run build && \
+#     npm install -g serve && \
+#     rm -rf /tmp/* /var/tmp/* /usr/src/app/node_modules /usr/src/app/src && \
+#     useradd -m appuser && \
+#     chown appuser .
+
 USER appuser
 
 CMD ["serve", "-s", "-l", "5000", "build"]
