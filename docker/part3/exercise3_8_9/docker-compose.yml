@@ -1,0 +1,21 @@
+services:
+  example-frontend:
+    image: example-frontend:multi-stage
+    build:
+      context: ../../example-frontend
+      dockerfile: Dockerfile.multi-stage
+    container_name: example-frontend
+    ports:
+      - 80:80
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:8080/
+  example-backend:
+    image: example-backend:multi-stage
+    build:
+      context: ../../example-backend
+      dockerfile: Dockerfile.multi-stage
+    container_name: example-backend
+    ports:
+      - 8080:8080
+    environment:
+      - REQUEST_ORIGIN=http://localhost

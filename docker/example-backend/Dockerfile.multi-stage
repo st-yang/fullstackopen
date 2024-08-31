@@ -1,0 +1,16 @@
+FROM golang:1.16.15 AS build-stage
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+# CGO must be disabled for statically linked binaries
+RUN CGO_ENABLED=0 go build
+
+FROM scratch
+
+EXPOSE 8080
+
+COPY --from=build-stage /usr/src/app/server /
+
+ENTRYPOINT ["/server"]
