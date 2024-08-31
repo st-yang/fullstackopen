@@ -1,0 +1,21 @@
+services:
+  example-frontend:
+    image: example-frontend:alphine
+    build:
+      context: ../../example-frontend
+      dockerfile: Dockerfile.alpine
+    container_name: example-frontend
+    ports:
+      - 5000:5000
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:8080/
+  example-backend:
+    image: example-backend:alphine
+    build:
+      context: ../../example-backend
+      dockerfile: Dockerfile.alpine
+    container_name: example-backend
+    ports:
+      - 8080:8080
+    environment:
+      - REQUEST_ORIGIN=http://localhost:5000
