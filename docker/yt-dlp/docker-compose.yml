@@ -2,8 +2,18 @@ version: '3.8'
 
 services:
   yt-dlp-ubuntu:
-    image: eranikus424/youtube-dl
-    build: .
+    image: eranikus424/youtube-dl:ubuntu
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/mydir
+    container_name: yt-dlp
+  yt-dlp-alpine:
+    image: eranikus424/youtube-dl:alpine
+    build:
+      context: .
+      dockerfile: Dockerfile.alpine
     volumes:
       - .:/mydir
     container_name: yt-dlp
