@@ -1,0 +1,3 @@
+Dockerfile before: https://github.com/st-yang/full-stack-open-pokedex/blob/main/Dockerfile
+Dockerfile after: https://github.com/st-yang/full-stack-open-pokedex/blob/main/Dockerfile.multi-stage
+Size: 1.44GB => 188MB
