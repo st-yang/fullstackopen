@@ -14,4 +14,8 @@ RUN npm run build
 
 RUN npm install -g serve
 
+RUN useradd -m appuser
+RUN chown appuser .
+USER appuser
+
 CMD ["serve", "-s", "-l", "5000", "build"]
