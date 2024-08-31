@@ -1,0 +1,4 @@
+Docker image eranikus424/pokedex was deployed on render:
+Pipeline: https://github.com/st-yang/full-stack-open-pokedex/blob/main/.github/workflows/docker-pipeline.yml
+Dockerfile: https://github.com/st-yang/full-stack-open-pokedex/blob/main/Dockerfile
+Service link: https://docker-pokedex.onrender.com/
