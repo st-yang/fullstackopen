@@ -1,0 +1,7 @@
+services:
+  log-output:
+    image: eranikus424/log-output
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: log-output
