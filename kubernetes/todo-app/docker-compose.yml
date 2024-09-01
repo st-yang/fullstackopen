@@ -1,0 +1,7 @@
+services:
+  todo-backend:
+    image: eranikus424/todo-backend
+    build:
+      context: ./todo-backend
+      dockerfile: Dockerfile
+    container_name: todo-backend
