@@ -15,3 +15,6 @@ spec:
       containers:
         - name: log-output
           image: eranikus424/log-output
+          env:
+            - name: PORT
+              value: '3000'
