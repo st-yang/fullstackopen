@@ -1,7 +1,0 @@
-services:
-  ping-pong:
-    image: eranikus424/ping-pong
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: ping-pong

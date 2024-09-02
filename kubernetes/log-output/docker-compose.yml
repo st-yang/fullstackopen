@@ -11,3 +11,9 @@ services:
       context: ./timestamp-generator
       dockerfile: Dockerfile
     container_name: timestamp-generator
+  ping-pong:
+    image: eranikus424/ping-pong
+    build:
+      context: ./ping-pong
+      dockerfile: Dockerfile
+    container_name: ping-pong

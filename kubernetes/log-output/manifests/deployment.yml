@@ -32,3 +32,25 @@ spec:
         - name: log-output-volume
           persistentVolumeClaim:
             claimName: log-output-pvc
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ping-pong-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ping-pong
+  template:
+    metadata:
+      labels:
+        app: ping-pong
+    spec:
+      containers:
+        - name: ping-pong
+          image: eranikus424/ping-pong
+          env:
+            - name: PORT
+              value: '3000'
