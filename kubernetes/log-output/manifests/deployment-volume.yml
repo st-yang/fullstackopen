@@ -1,27 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ping-pong-deploy
+  name: log-output-deploy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ping-pong
+      app: log-output
   template:
     metadata:
       labels:
-        app: ping-pong
+        app: log-output
     spec:
       containers:
-        - name: ping-pong
-          image: eranikus424/ping-pong
+        - name: log-output
+          image: eranikus424/log-output
           volumeMounts:
             - name: log-output-volume
               mountPath: /usr/src/app/logs
           env:
             - name: PORT
               value: '3000'
+        - name: timestamp-generator
+          image: eranikus424/timestamp-generator
+          volumeMounts:
+            - name: log-output-volume
+              mountPath: /usr/src/app/logs
       volumes:
         - name: log-output-volume
-          persistentVolumeClaim:
-            claimName: log-output-pvc
+          emptyDir: {}

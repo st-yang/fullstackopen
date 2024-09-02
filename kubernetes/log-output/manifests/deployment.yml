@@ -28,4 +28,5 @@ spec:
               mountPath: /usr/src/app/logs
       volumes:
         - name: log-output-volume
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: log-output-pvc
