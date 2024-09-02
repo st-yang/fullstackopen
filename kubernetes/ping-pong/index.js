@@ -13,15 +13,7 @@ let count = 0
 
 app.get('/pingpong', (req, res) => {
   count++
-
-  fs.writeFile(filePath, count.toString(), (err) => {
-    if (err) {
-      console.error(err)
-      return
-    }
-    console.log(`write to ${filePath}: ${count}`)
-    res.send(`pong ${count}`)
-  })
+  res.send(`${count}`)
 })
 
 app.listen(PORT, () => {

@@ -15,13 +15,6 @@ spec:
       containers:
         - name: ping-pong
           image: eranikus424/ping-pong
-          volumeMounts:
-            - name: log-output-volume
-              mountPath: /usr/src/app/logs
           env:
             - name: PORT
               value: '3000'
-      volumes:
-        - name: log-output-volume
-          persistentVolumeClaim:
-            claimName: log-output-pvc
