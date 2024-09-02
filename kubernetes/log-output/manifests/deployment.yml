@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: log-output
   name: log-output-deploy
 spec:
   replicas: 1
@@ -37,6 +38,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: log-output
   name: ping-pong-deploy
 spec:
   replicas: 1
