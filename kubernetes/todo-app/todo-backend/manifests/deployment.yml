@@ -15,6 +15,13 @@ spec:
       containers:
         - name: todo-backend
           image: eranikus424/todo-backend
+          volumeMounts:
+            - name: todo-volume
+              mountPath: /usr/src/app/storage
           env:
             - name: PORT
               value: '3000'
+      volumes:
+        - name: todo-volume
+          persistentVolumeClaim:
+            claimName: todo-pvc

@@ -1,12 +1,7 @@
-const express = require('express')
-const app = express()
+const app = require('./app')
+const config = require('./utils/config')
+const logger = require('./utils/logger')
 
-const PORT = process.env.PORT || 3000
-
-app.get('/health', (req, res) => {
-  res.send('ok')
-})
-
-app.listen(PORT, () => {
-  console.log(`server started on port ${PORT}`)
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`)
 })
