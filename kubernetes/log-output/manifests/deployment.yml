@@ -15,6 +15,17 @@ spec:
       containers:
         - name: log-output
           image: eranikus424/log-output
+          volumeMounts:
+            - name: log-output-volume
+              mountPath: /usr/src/app/logs
           env:
             - name: PORT
               value: '3000'
+        - name: timestamp-generator
+          image: eranikus424/timestamp-generator
+          volumeMounts:
+            - name: log-output-volume
+              mountPath: /usr/src/app/logs
+      volumes:
+        - name: log-output-volume
+          emptyDir: {}

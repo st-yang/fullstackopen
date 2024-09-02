@@ -2,6 +2,12 @@ services:
   log-output:
     image: eranikus424/log-output
     build:
-      context: .
+      context: ./log-output
       dockerfile: Dockerfile
     container_name: log-output
+  timestamp-generator:
+    image: eranikus424/timestamp-generator
+    build:
+      context: ./timestamp-generator
+      dockerfile: Dockerfile
+    container_name: timestamp-generator
