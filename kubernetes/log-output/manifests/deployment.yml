@@ -19,11 +19,22 @@ spec:
           volumeMounts:
             - name: log-output-volume
               mountPath: /usr/src/app/logs
+            - name: config
+              mountPath: /usr/src/app/config
+              readOnly: true
           env:
             - name: PORT
               value: '3000'
             - name: PINGPONG_URL
-              value: 'http://ping-pong-svc:1234/pingpong'
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-configmap
+                  key: pingpong_url
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-configmap
+                  key: message
         - name: timestamp-generator
           image: eranikus424/timestamp-generator
           volumeMounts:
@@ -33,6 +44,12 @@ spec:
         - name: log-output-volume
           persistentVolumeClaim:
             claimName: log-output-pvc
+        - name: config
+          configMap:
+            name: log-output-configmap
+            items:
+              - key: information.txt
+                path: information.txt
 
 ---
 apiVersion: apps/v1

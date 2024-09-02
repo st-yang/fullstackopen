@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: log-output
+  name: log-output-configmap
+data:
+  information.txt: |
+    this text is from file
+  message: 'hello world'
+  pingpong_url: 'http://ping-pong-svc:1234/pingpong'
