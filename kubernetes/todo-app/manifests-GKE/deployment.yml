@@ -16,6 +16,7 @@ spec:
       containers:
         - name: todo-frontend
           image: eranikus424/todo-frontend
+          imagePullPolicy: Always
 
 ---
 apiVersion: apps/v1
@@ -36,6 +37,7 @@ spec:
       containers:
         - name: todo-backend
           image: eranikus424/todo-backend
+          imagePullPolicy: Always
           volumeMounts:
             - name: todo-volume
               mountPath: /usr/src/app/storage

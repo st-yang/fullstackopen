@@ -7,6 +7,8 @@ app.use(express.json())
 const cors = require('cors')
 app.use(cors())
 
+app.get('/', (req, res) => res.send('ok'))
+
 const healthRouter = require('./controllers/health')
 const imageRouter = require('./controllers/image')
 const todosRouter = require('./controllers/todos')
