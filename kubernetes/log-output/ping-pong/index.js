@@ -5,6 +5,8 @@ const { PORT } = require('./util/config')
 const { connectToDatabase } = require('./util/db')
 const { Counter } = require('./models')
 
+app.get('/', (req, res) => res.send('ok'))
+
 app.get('/pingpong', async (req, res) => {
   const count = await Counter.findOne()
   count.count++
