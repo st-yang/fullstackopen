@@ -4,7 +4,7 @@ metadata:
   namespace: log-output
   name: log-output-svc
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: log-output
   ports:
@@ -19,7 +19,7 @@ metadata:
   namespace: log-output
   name: ping-pong-svc
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: ping-pong
   ports:
