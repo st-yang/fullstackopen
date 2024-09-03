@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: log-output
+  name: log-output-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-output
+  template:
+    metadata:
+      labels:
+        app: log-output
+    spec:
+      containers:
+        - name: log-output
+          image: eranikus424/log-output
+          volumeMounts:
+            - name: log-output-volume
+              mountPath: /usr/src/app/logs
+            - name: config
+              mountPath: /usr/src/app/config
+              readOnly: true
+          env:
+            - name: PORT
+              value: '3000'
+            - name: PINGPONG_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-configmap
+                  key: pingpong_url
+            - name: MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-configmap
+                  key: message
+        - name: timestamp-generator
+          image: eranikus424/timestamp-generator
+          volumeMounts:
+            - name: log-output-volume
+              mountPath: /usr/src/app/logs
+      volumes:
+        - name: log-output-volume
+          persistentVolumeClaim:
+            claimName: log-output-pvc
+        - name: config
+          configMap:
+            name: log-output-configmap
+            items:
+              - key: information.txt
+                path: information.txt
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: log-output
+  name: ping-pong-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ping-pong
+  template:
+    metadata:
+      labels:
+        app: ping-pong
+    spec:
+      containers:
+        - name: ping-pong
+          image: eranikus424/ping-pong
+          env:
+            - name: PORT
+              value: '3000'
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: log-output-configmap
+                  key: postgres_url
