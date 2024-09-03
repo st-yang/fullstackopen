@@ -5,6 +5,8 @@ services:
       context: ./log-output
       dockerfile: Dockerfile
     container_name: log-output
+    environment:
+      PINGPONG_URL: http://ping-pong:3000/pingpong
   timestamp-generator:
     image: eranikus424/timestamp-generator
     build:
@@ -17,3 +19,16 @@ services:
       context: ./ping-pong
       dockerfile: Dockerfile
     container_name: ping-pong
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -8,3 +8,4 @@ data:
     this text is from file
   message: 'hello world'
   pingpong_url: 'http://ping-pong-svc:1234/pingpong'
+  postgres_url: 'postgres://postgres:postgres@postgres-svc:5432/postgres'

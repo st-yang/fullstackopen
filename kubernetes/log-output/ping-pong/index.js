@@ -1,21 +1,22 @@
-const path = require('path')
-const fs = require('fs')
-
-const directory = path.join('/', 'usr', 'src', 'app', 'logs')
-const filePath = path.join(directory, 'pingpong')
-
 const express = require('express')
 const app = express()
 
-const PORT = process.env.PORT || 3000
+const { PORT } = require('./util/config')
+const { connectToDatabase } = require('./util/db')
+const { Counter } = require('./models')
 
-let count = 0
-
-app.get('/pingpong', (req, res) => {
-  count++
-  res.send(`${count}`)
+app.get('/pingpong', async (req, res) => {
+  const count = await Counter.findOne()
+  count.count++
+  await count.save()
+  res.send(`${count.count}`)
 })
 
-app.listen(PORT, () => {
-  console.log(`server started on port ${PORT}`)
-})
+const start = async () => {
+  await connectToDatabase()
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
+}
+
+start()
