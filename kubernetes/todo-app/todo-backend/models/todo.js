@@ -14,6 +14,9 @@ Todo.init(
     text: {
       type: DataTypes.TEXT,
       allowNull: false,
+      validate: {
+        max: 140,
+      },
     },
     done: {
       type: DataTypes.BOOLEAN,
