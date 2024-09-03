@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: todo
+  name: todo-frontend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-frontend
+  template:
+    metadata:
+      labels:
+        app: todo-frontend
+    spec:
+      containers:
+        - name: todo-frontend
+          image: eranikus424/todo-frontend
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: todo
+  name: todo-backend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-backend
+  template:
+    metadata:
+      labels:
+        app: todo-backend
+    spec:
+      containers:
+        - name: todo-backend
+          image: eranikus424/todo-backend
+          volumeMounts:
+            - name: todo-volume
+              mountPath: /usr/src/app/storage
+          env:
+            - name: PORT
+              value: '3000'
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-configmap
+                  key: postgres_url
+      volumes:
+        - name: todo-volume
+          persistentVolumeClaim:
+            claimName: todo-pvc
