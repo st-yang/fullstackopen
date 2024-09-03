@@ -1,0 +1,64 @@
+name: Automatic deployment for todo-app on GKE
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'kubernetes/todo-app/**'
+      - '.github/workflows/GKE-todo.yml'
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: dwk-cluster
+  GKE_ZONE: asia-east2-a
+  BRANCH: ${{ github.ref_name }}
+
+jobs:
+  deploy-todo-gke:
+    name: Deploy todo-app to GKE
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GKE_SA_KEY }}'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Use gcloud CLI
+        run: gcloud info
+
+      - name: Configure Docker to use Google Container Registry (GCR)
+        run: gcloud --quiet auth configure-docker
+
+      - name: 'Get GKE credentials'
+        uses: 'google-github-actions/get-gke-credentials@v2'
+        with:
+          cluster_name: '${{ env.GKE_CLUSTER }}'
+          project_id: '${{ env.PROJECT_ID }}'
+          location: '${{ env.GKE_ZONE }}'
+
+      - name: Build images
+        run: docker compose -f kubernetes/todo-app/docker-compose-GKE.yml build
+
+      - name: Publish images
+        run: docker compose -f kubernetes/todo-app/docker-compose-GKE.yml push
+
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v2
+
+      - name: Deploy
+        run: |-
+          cd kubernetes/todo-app/
+          kustomize edit set image gcr.io/dwk-gke-24/todo-frontend:$GITHUB_SHA
+          kustomize edit set image gcr.io/dwk-gke-24/todo-backend:$GITHUB_SHA
+          kustomize build . | kubectl apply -f -
+          kubectl -n todo rollout status deployment todo-frontend-deploy
+          kubectl -n todo rollout status deployment todo-backend-deploy
+          kubectl -n todo get all -o wide

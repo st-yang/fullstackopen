@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: todo-frontend
-          image: eranikus424/todo-frontend
+          image: gcr.io/dwk-gke-24/todo-frontend
           imagePullPolicy: Always
 
 ---
@@ -29,6 +29,9 @@ spec:
   selector:
     matchLabels:
       app: todo-backend
+  # GKE doesn't support ReadWriteMany for pvc, so we use Recreate for deployment
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -36,7 +39,7 @@ spec:
     spec:
       containers:
         - name: todo-backend
-          image: eranikus424/todo-backend
+          image: gcr.io/dwk-gke-24/todo-backend
           imagePullPolicy: Always
           volumeMounts:
             - name: todo-volume

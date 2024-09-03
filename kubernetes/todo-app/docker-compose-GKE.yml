@@ -1,0 +1,41 @@
+services:
+  todo-frontend:
+    image: gcr.io/dwk-gke-24/todo-frontend:${GITHUB_SHA}
+    build:
+      context: ./todo-frontend
+      dockerfile: Dockerfile
+    container_name: todo-frontend
+  todo-backend:
+    image: gcr.io/dwk-gke-24/todo-backend:${GITHUB_SHA}
+    build:
+      context: ./todo-backend
+      dockerfile: Dockerfile
+    container_name: todo-backend
+    restart: unless-stopped
+    volumes:
+      - todo-storage:/usr/src/app/storage
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  reverse-proxy:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 80:80
+    container_name: reverse-proxy
+    restart: unless-stopped
+    depends_on:
+      - todo-frontend
+      - todo-backend
+
+volumes:
+  todo-storage:
+  postgres_data:
