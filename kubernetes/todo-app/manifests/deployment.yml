@@ -42,6 +42,11 @@ spec:
           env:
             - name: PORT
               value: '3000'
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-configmap
+                  key: postgres_url
       volumes:
         - name: todo-volume
           persistentVolumeClaim:

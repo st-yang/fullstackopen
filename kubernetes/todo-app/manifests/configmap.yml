@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: todo
+  name: todo-configmap
+data:
+  postgres_url: 'postgres://postgres:postgres@postgres-svc:5432/postgres'
