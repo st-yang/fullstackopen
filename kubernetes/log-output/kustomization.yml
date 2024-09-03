@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - manifests-GKE/namespace.yml
+  - manifests-GKE/configmap.yml
+  - manifests-GKE/persistentvolumeclaim.yml
+  - manifests-GKE/postgres.yml
+  - manifests-GKE/deployment.yml
+  - manifests-GKE/service.yml
+  - manifests-GKE/ingress.yml
