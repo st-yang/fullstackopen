@@ -16,6 +16,10 @@ spec:
       containers:
         - name: todo-frontend
           image: eranikus424/todo-frontend
+          resources:
+            limits:
+              cpu: 200m
+              memory: 100Mi
 
 ---
 apiVersion: apps/v1
@@ -47,6 +51,10 @@ spec:
                 configMapKeyRef:
                   name: todo-configmap
                   key: postgres_url
+          resources:
+            limits:
+              cpu: 200m
+              memory: 100Mi
       volumes:
         - name: todo-volume
           persistentVolumeClaim:
