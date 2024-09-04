@@ -16,6 +16,7 @@ spec:
       containers:
         - name: todo-frontend
           image: eranikus424/todo-frontend
+          imagePullPolicy: Always
           resources:
             limits:
               cpu: 200m
@@ -40,6 +41,7 @@ spec:
       containers:
         - name: todo-backend
           image: eranikus424/todo-backend
+          imagePullPolicy: Always
           volumeMounts:
             - name: todo-volume
               mountPath: /usr/src/app/storage
@@ -55,6 +57,18 @@ spec:
             limits:
               cpu: 200m
               memory: 100Mi
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            httpGet:
+              path: /api/health
+              port: 3000
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            httpGet:
+              path: /api/health
+              port: 3000
       volumes:
         - name: todo-volume
           persistentVolumeClaim:
