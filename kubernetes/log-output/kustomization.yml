@@ -9,3 +9,4 @@ resources:
   - manifests-GKE/service.yml
   - manifests-GKE/ingress.yml
   - manifests-GKE/horizontalpodautoscaler.yaml
+  - manifests-GKE/poddisruptionbudget.yaml

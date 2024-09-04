@@ -1,0 +1,22 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  namespace: log-output
+  name: log-output-pdb
+spec:
+  maxUnavailable: 50%
+  selector:
+    matchLabels:
+      app: log-output
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  namespace: log-output
+  name: ping-pong-pdb
+spec:
+  maxUnavailable: 50%
+  selector:
+    matchLabels:
+      app: ping-pong
