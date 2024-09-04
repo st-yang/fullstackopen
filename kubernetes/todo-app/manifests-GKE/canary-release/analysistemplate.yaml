@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  namespace: todo
+  name: todo-frontend-cpu-usage-rate
+spec:
+  metrics:
+    - name: todo-frontend-cpu-usage-rate
+      initialDelay: 1m
+      count: 10
+      successCondition: result[0] < 5.0
+      provider:
+        prometheus:
+          address: http://kube-prometheus-stack-1725-prometheus.prometheus.svc.cluster.local:9090 # DNS name for my Prometheus, find yours with kubectl describe svc ...
+          query: |
+            sum(rate(container_cpu_usage_seconds_total{namespace="todo",pod=~"todo-frontend-(.*)"}[1m]))*1000
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  namespace: todo
+  name: todo-backend-cpu-usage-rate
+spec:
+  metrics:
+    - name: todo-backend-cpu-usage-rate
+      initialDelay: 1m
+      count: 10
+      successCondition: result[0] < 5.0
+      provider:
+        prometheus:
+          address: http://kube-prometheus-stack-1725-prometheus.prometheus.svc.cluster.local:9090 # DNS name for my Prometheus, find yours with kubectl describe svc ...
+          query: |
+            sum(rate(container_cpu_usage_seconds_total{namespace="todo",pod=~"todo-backend-(.*)"}[1m]))*1000

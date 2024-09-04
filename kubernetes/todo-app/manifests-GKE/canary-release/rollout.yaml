@@ -1,0 +1,99 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  namespace: todo
+  name: todo-frontend-deploy
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: todo-frontend
+  strategy:
+    canary:
+      steps:
+        - setWeight: 25
+        - pause:
+            duration: 30s
+        - setWeight: 50
+        - pause:
+            duration: 30s
+        - analysis:
+            templates:
+              - templateName: todo-frontend-cpu-usage-rate
+  template:
+    metadata:
+      labels:
+        app: todo-frontend
+    spec:
+      containers:
+        - name: todo-frontend
+          image: eranikus424/todo-frontend
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 200m
+              memory: 100Mi
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  namespace: todo
+  name: todo-backend-deploy
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: todo-backend
+  strategy:
+    canary:
+      steps:
+        - setWeight: 25
+        - pause:
+            duration: 30s
+        - setWeight: 50
+        - pause:
+            duration: 30s
+        - analysis:
+            templates:
+              - templateName: todo-backend-cpu-usage-rate
+  template:
+    metadata:
+      labels:
+        app: todo-backend
+    spec:
+      containers:
+        - name: todo-backend
+          image: eranikus424/todo-backend
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: todo-volume
+              mountPath: /usr/src/app/storage
+          env:
+            - name: PORT
+              value: '3000'
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: todo-configmap
+                  key: postgres_url
+          resources:
+            limits:
+              cpu: 200m
+              memory: 100Mi
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            httpGet:
+              path: /api/health
+              port: 3000
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            httpGet:
+              path: /api/health
+              port: 3000
+      volumes:
+        - name: todo-volume
+          persistentVolumeClaim:
+            claimName: todo-pvc
