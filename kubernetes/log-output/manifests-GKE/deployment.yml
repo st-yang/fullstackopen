@@ -36,12 +36,20 @@ spec:
                 configMapKeyRef:
                   name: log-output-configmap
                   key: message
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
         - name: timestamp-generator
           image: eranikus424/timestamp-generator
           imagePullPolicy: Always
           volumeMounts:
             - name: log-output-volume
               mountPath: /usr/src/app/logs
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
       volumes:
         - name: log-output-volume
           persistentVolumeClaim:
@@ -81,3 +89,7 @@ spec:
                 configMapKeyRef:
                   name: log-output-configmap
                   key: postgres_url
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi

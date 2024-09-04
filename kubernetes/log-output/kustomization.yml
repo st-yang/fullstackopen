@@ -8,3 +8,4 @@ resources:
   - manifests-GKE/deployment.yml
   - manifests-GKE/service.yml
   - manifests-GKE/ingress.yml
+  - manifests-GKE/horizontalpodautoscaler.yaml
