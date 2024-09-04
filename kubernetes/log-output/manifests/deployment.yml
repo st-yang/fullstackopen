@@ -35,6 +35,12 @@ spec:
                 configMapKeyRef:
                   name: log-output-configmap
                   key: message
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            httpGet:
+              path: /
+              port: 3000
         - name: timestamp-generator
           image: eranikus424/timestamp-generator
           volumeMounts:
@@ -78,3 +84,9 @@ spec:
                 configMapKeyRef:
                   name: log-output-configmap
                   key: postgres_url
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            httpGet:
+              path: /
+              port: 3000
