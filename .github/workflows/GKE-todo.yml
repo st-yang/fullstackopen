@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - staging
+      - develop
     paths:
       - 'kubernetes/todo-app/**'
       - '.github/workflows/GKE-todo.yml'
@@ -56,9 +58,22 @@ jobs:
       - name: Deploy
         run: |-
           cd kubernetes/todo-app/
+
+          NAMESPACE=todo
+          if [[ ${BRANCH} != 'main' ]]
+          then
+            NAMESPACE=${NAMESPACE}-${BRANCH}
+          fi
+          echo "Deploying ${BRANCH} branch to namespace ${NAMESPACE}"
+          kubectl create namespace ${NAMESPACE} || true
+          kubectl config set-context --current --namespace=${NAMESPACE}
+          kustomize edit set namespace ${NAMESPACE}
+
           kustomize edit set image gcr.io/dwk-gke-24/todo-frontend:$GITHUB_SHA
           kustomize edit set image gcr.io/dwk-gke-24/todo-backend:$GITHUB_SHA
+
           kustomize build . | kubectl apply -f -
-          kubectl -n todo rollout status deployment todo-frontend-deploy
-          kubectl -n todo rollout status deployment todo-backend-deploy
-          kubectl -n todo get all -o wide
+
+          kubectl rollout status deployment todo-frontend-deploy
+          kubectl rollout status deployment todo-backend-deploy
+          kubectl get all -o wide
