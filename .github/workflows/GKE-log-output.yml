@@ -1,0 +1,47 @@
+name: Automatic deployment for log-output on GKE
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - develop
+    paths:
+      - 'kubernetes/log-output/**'
+      - '.github/workflows/GKE-log-output.yml'
+
+jobs:
+  build-publish:
+    name: Build, Push, Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build images
+        run: docker compose -f kubernetes/log-output/docker-compose.yml build
+
+      - name: Publish images
+        run: docker compose -f kubernetes/log-output/docker-compose.yml push
+
+    #   - name: Set up Kustomize
+    #     uses: imranismail/setup-kustomize@v2
+
+    #   - name: Use right image
+    #     run: |-
+    #       kustomize edit set image eranikus424/log-output=eranikus424/log-output:$GITHUB_SHA
+    #       kustomize edit set image eranikus424/log-output=eranikus424/timestamp-generator:$GITHUB_SHA
+    #       kustomize edit set image eranikus424/log-output=eranikus424/ping-pong:$GITHUB_SHA
+
+    #   - name: commit kustomization.yaml to GitHub
+    #     uses: EndBug/add-and-commit@v9
+    #     with:
+    #       add: 'kustomization.yaml'
+    #       message: New version released ${{ github.sha }}
