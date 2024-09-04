@@ -9,3 +9,6 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 # get initial password
 kubectl get -n argocd secrets argocd-initial-admin-secret -o yaml
+
+# disable git modules
+kubectl set env deployment/argocd-repo-server ARGOCD_GIT_MODULES_ENABLED=false
